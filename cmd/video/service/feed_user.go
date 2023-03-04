@@ -65,7 +65,7 @@ func (s *GetUserFeedService) GetVideoFeed(req *video.FeedRequest) (vis []*video.
 	
 	for index, val := range videos{
 		
-		if temp := pack.Video(val, users[index]); temp != nil{
+		if temp := pack.Videos(val, users[index]); temp != nil{
 			pack_videos = append(pack_videos, temp)
 
 		}
