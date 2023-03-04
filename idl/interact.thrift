@@ -88,7 +88,6 @@ struct Comment {
 service InteractService {
     
     FavoriteActionResponse FavoriteAction(1:FavoriteActionRequest req) // 用户点赞
-    
     FavoriteListResponse FavoriteList(1:FavoriteListRequest req) // 用户点赞列表
     CommentActionResponse CommentAction(1: CommentActionRequest req) //评论操作
     CommentListResponse CommentList(1: CommentListRequest req) //返回评论列表
