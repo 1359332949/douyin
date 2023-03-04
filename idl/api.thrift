@@ -93,10 +93,9 @@ struct UserInfoResponse {
 }
 
 struct PublishActionRequest {
-    1: i64 user_id;
-    2: string token(api.query="token");
-    3: binary data(api.query="data");
-    4: string title(api.query="data");
+    1: string token(api.form="token")
+    2: binary data(api.form="data")
+    3: string title(api.form="title")
 }
 
 struct PublishActionResponse {
@@ -265,8 +264,9 @@ struct CommentActionResponse {
 }
 
 struct CommentListRequest {
-    1: string token  // 用户鉴权token
-    2: i64 video_id  // 视频id
+    1: i64 user_id
+    2: string token  // 用户鉴权token
+    3: i64 video_id  // 视频id
 }
 
 struct CommentListResponse {
