@@ -65,8 +65,20 @@ func QueryUserInfo(ctx context.Context, uid int64) ([]*User, error) {
 	if err := DB.WithContext(ctx).Where("id = ?", uid).Find(&res).Error; err != nil {
 		return nil, err
 	}
-	// if res != 1{
-	// 	return 
-	// }
+
+	return res, nil
+}
+// MgetUserInfo query list of user info
+func MgetUserById(ctx context.Context, userIds []int64) ([]*User, error) {
+	if len(userIDs) == 0 {
+		return res, nil
+	}
+	res := make([]*User, 0)
+	
+	if err := DB.WithContext(ctx).Where("id = ?", userIds).Find(&res).Error; err != nil {
+			return nil, err
+	}
+
+	
 	return res, nil
 }

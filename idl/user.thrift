@@ -79,11 +79,20 @@ struct UserInfoResponse {
 
 }
 
+struct MGetUserRequest {
+    1: list<i64> user_ids
+}
+
+struct MGetUserResponse {
+    1: list<User> users
+    2: i32 status_code
+    3: string status_msg
+}
 
 service UserService {
     LoginUserResponse LoginUser(1: LoginUserRequest req)
     LogoutUserResponse LogoutUser(1: LogoutUserRequest req)
     RegisterUserResponse RegisterUser(1: RegisterUserRequest req)
     UserInfoResponse UserInfo(1: UserInfoRequest req)
-   
+    MGetUserResponse MGetUser(1: MGetUserRequest req)
 }
