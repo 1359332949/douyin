@@ -76,7 +76,7 @@ struct PublishListResponse {
 }
 
 
-service UserService {
+service VideoService {
     
     PublishActionResponse PublishAction(1: PublishActionRequest req)
     PublishListResponse PublishList(1: PublishListRequest req)

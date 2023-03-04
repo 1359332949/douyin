@@ -11,9 +11,10 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	PublishAction(ctx context.Context, req *user.PublishActionRequest, callOptions ...callopt.Option) (r *user.PublishActionResponse, err error)
-	PublishList(ctx context.Context, req *user.PublishListRequest, callOptions ...callopt.Option) (r *user.PublishListResponse, err error)
-	GetUserFeed(ctx context.Context, req *user.FeedRequest, callOptions ...callopt.Option) (r *user.FeedResponse, err error)
+	LoginUser(ctx context.Context, req *user.LoginUserRequest, callOptions ...callopt.Option) (r *user.LoginUserResponse, err error)
+	LogoutUser(ctx context.Context, req *user.LogoutUserRequest, callOptions ...callopt.Option) (r *user.LogoutUserResponse, err error)
+	RegisterUser(ctx context.Context, req *user.RegisterUserRequest, callOptions ...callopt.Option) (r *user.RegisterUserResponse, err error)
+	UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -45,17 +46,22 @@ type kUserServiceClient struct {
 	*kClient
 }
 
-func (p *kUserServiceClient) PublishAction(ctx context.Context, req *user.PublishActionRequest, callOptions ...callopt.Option) (r *user.PublishActionResponse, err error) {
+func (p *kUserServiceClient) LoginUser(ctx context.Context, req *user.LoginUserRequest, callOptions ...callopt.Option) (r *user.LoginUserResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.PublishAction(ctx, req)
+	return p.kClient.LoginUser(ctx, req)
 }
 
-func (p *kUserServiceClient) PublishList(ctx context.Context, req *user.PublishListRequest, callOptions ...callopt.Option) (r *user.PublishListResponse, err error) {
+func (p *kUserServiceClient) LogoutUser(ctx context.Context, req *user.LogoutUserRequest, callOptions ...callopt.Option) (r *user.LogoutUserResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.PublishList(ctx, req)
+	return p.kClient.LogoutUser(ctx, req)
 }
 
-func (p *kUserServiceClient) GetUserFeed(ctx context.Context, req *user.FeedRequest, callOptions ...callopt.Option) (r *user.FeedResponse, err error) {
+func (p *kUserServiceClient) RegisterUser(ctx context.Context, req *user.RegisterUserRequest, callOptions ...callopt.Option) (r *user.RegisterUserResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUserFeed(ctx, req)
+	return p.kClient.RegisterUser(ctx, req)
+}
+
+func (p *kUserServiceClient) UserInfo(ctx context.Context, req *user.UserInfoRequest, callOptions ...callopt.Option) (r *user.UserInfoResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UserInfo(ctx, req)
 }
