@@ -30,13 +30,13 @@ func User(u *db.User) *video.User {
 
 // Users pack list of video info
 func Users(us []*db.User) []*video.User {
-	videos := make([]*video.User, 0)
+	users := make([]*video.User, 0)
 	for _, u := range us {
 		if temp := User(u); temp != nil {
-			videos = append(videos, temp)
+			users = append(users, temp)
 		}
 	}
-	return videos
+	return users
 }
 
 // Video pack of One Video info

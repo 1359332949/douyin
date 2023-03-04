@@ -3,10 +3,8 @@ package rpc
 
 import (
 	"context"
-	"fmt"
-	"github.com/1359332949/douyin/pkg/consts"
-	"context"
-
+	// "fmt"
+	// "github.com/1359332949/douyin/cmd/video/pack"
 	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/user/userservice"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -17,24 +15,8 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
-)
 
-type User struct {
-	gorm.Model
-	ID            int64     `gorm:"column:id;primary_key;AUTO_INCREMENT"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Name string `json:"name"`
-	FollowCount   int64  `json:"follow_count"`
-	FollowerCount int64  `json:"follower_count"`
-	IsFollow      bool   `json:"is_follow"`
-	// Avatar string  `json:"avatar"`
-	// BackgroundImage string  `json:"background_image"`
-	// Signature string  `json:"signature"`
-	// TotalFavorited string  `json:"total_favorited"`
-	// WorkCount int64  `json:"work_count"`
-	// FavoriteCount int64  `json:"favorite_count"`
-}
+)
 
 
 var userClient userservice.Client
@@ -65,19 +47,20 @@ func initUser() {
 }
 
 // QueryUser query list of user info by name
-func MgetUser(ctx context.Context, req *user.UserInfoRequest) ([]*User, error) {
+func MgetUser(ctx context.Context, req *user.UserInfoRequest) ([]*user.User, error) {
 	resp, err := userClient.UserInfo(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	if resp.BaseResp.StatusCode != 0 {
-		return nil, errno.NewErrNo(resp.BaseResp.StatusCode, resp.BaseResp.StatusMessage)
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
+	
 	// res := make([]*user.User)
 	// for _, u := range resp.Users {
 	// 	res[u.UserId] = u
 	// }
-	res := resp.User
-	return res, nil
+	
+	return resp.User, nil
 
 }

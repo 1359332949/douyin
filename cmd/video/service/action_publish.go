@@ -6,9 +6,9 @@ import (
 	// "crypto/md5"
 	// "fmt"
 	// "io"
-	// "github.com/1359332949/douyin/cmd/user/pack"
-	"github.com/1359332949/douyin/cmd/user/dal/db"
-	"github.com/1359332949/douyin/kitex_gen/user"
+	// "github.com/1359332949/douyin/cmd/video/pack"
+	"github.com/1359332949/douyin/cmd/video/dal/db"
+	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/pkg/errno"
 )
 
@@ -21,8 +21,8 @@ func NewPublishActionService(ctx context.Context) *PublishActionService {
 	return &PublishActionService{ctx: ctx}
 }
 
-/// PublishActionService query user info
-func (s *PublishActionService) PublishAction(req *user.PublishActionRequest) error{
+/// PublishActionService query video info
+func (s *PublishActionService) PublishAction(req *video.PublishActionRequest) error{
 	
 
 	VideoModel := &db.Video{

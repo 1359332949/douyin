@@ -7,9 +7,9 @@ import (
 	// "fmt"
 	// "io"
 	// "log"
-	"github.com/1359332949/douyin/cmd/user/pack"
-	"github.com/1359332949/douyin/cmd/user/dal/db"
-	"github.com/1359332949/douyin/kitex_gen/user"
+	"github.com/1359332949/douyin/cmd/video/pack"
+	"github.com/1359332949/douyin/cmd/video/dal/db"
+	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/main/pkg/errno"
 )
 
@@ -22,8 +22,8 @@ func NewPublishListService(ctx context.Context) *PublishListService {
 	return &PublishListService{ctx: ctx}
 }
 
-/// PublishListService query user info
-func (s *PublishListService) PublishList(req *user.PublishListRequest) ([]*user.Video, error){
+/// PublishListService query video info
+func (s *PublishListService) PublishList(req *video.PublishListRequest) ([]*video.Video, error){
 	videoModels, err := db.MGetVideosOfUserIDList(s.ctx, req.UserId)
 	if err != nil {
 		return nil, err

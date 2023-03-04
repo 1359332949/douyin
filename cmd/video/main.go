@@ -4,6 +4,7 @@ import (
 	// "log"
 	"net"
 	"github.com/1359332949/douyin/cmd/video/dal"
+	"github.com/1359332949/douyin/cmd/video/rpc"
 	"github.com/1359332949/douyin/kitex_gen/video/videoservice"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
@@ -17,6 +18,7 @@ import (
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
 func Init() {
+	rpc.Init()
 	dal.Init()
 	// klog init
 	klog.SetLogger(kitexlogrus.NewLogger())
