@@ -25,5 +25,5 @@ func BuildBaseResp(err error) *video.BaseResp {
 
 func baseResp(err errno.ErrNo) *video.BaseResp {
 	
-	return &user.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
+	return &video.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
