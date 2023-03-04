@@ -8,6 +8,14 @@ enum ErrCode {
     AuthorizationFailedErrCode = 10004
 }
 
+struct User {
+    1: i64 id
+    2: string name
+    3: i64 follow_count // 关注总数
+    4: i64 follower_count  // 粉丝总数
+    5: bool is_follow  // true-已关注，false-未关注
+
+}
 
 struct Video {
     1: i64 id;

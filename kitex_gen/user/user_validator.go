@@ -30,14 +30,6 @@ func (p *UserLogin) IsValid() error {
 func (p *User) IsValid() error {
 	return nil
 }
-func (p *Video) IsValid() error {
-	if p.Author != nil {
-		if err := p.Author.IsValid(); err != nil {
-			return fmt.Errorf("filed Author not valid, %w", err)
-		}
-	}
-	return nil
-}
 func (p *LoginUserRequest) IsValid() error {
 	if len(p.Username) < int(1) {
 		return fmt.Errorf("field Username min_len rule failed, current value: %d", len(p.Username))
@@ -71,26 +63,5 @@ func (p *UserInfoResponse) IsValid() error {
 			return fmt.Errorf("filed User not valid, %w", err)
 		}
 	}
-	return nil
-}
-func (p *PublishActionRequest) IsValid() error {
-	return nil
-}
-func (p *PublishActionResponse) IsValid() error {
-	return nil
-}
-func (p *PublishListRequest) IsValid() error {
-	return nil
-}
-func (p *PublishListResponse) IsValid() error {
-	return nil
-}
-func (p *FeedRequest) IsValid() error {
-	return nil
-}
-func (p *FeedResponse) IsValid() error {
-	return nil
-}
-func (p *VideoIdRequest) IsValid() error {
 	return nil
 }
