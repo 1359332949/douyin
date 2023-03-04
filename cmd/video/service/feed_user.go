@@ -7,9 +7,11 @@ import (
 	// "crypto/md5"
 	// "fmt"
 	// "io"
+
 	"github.com/1359332949/douyin/cmd/video/pack"
 	"github.com/1359332949/douyin/cmd/video/dal/db"
 	"github.com/1359332949/douyin/cmd/video/rpc"
+	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/pkg/errno"
 )
@@ -50,20 +52,23 @@ func (s *GetUserFeedService) GetVideoFeed(req *video.FeedRequest) (vis []*video.
 	//查询视频作者信息
 	nextTime = time.Now().UnixMilli()
 	pack_videos := make([]*video.Video, 0) 
-	for index, val := range videos{
-		users, err := rpc.MgetUser(s.ctx, videos[index].AuthorID)
-		u := users[0]
-		if err != nil{
-			return nil, 0, err
-		}
+	user_ids := make([]int64, 0) 
+	for _, video := range videos{
+		user_ids = append(user_ids, video.AuthorID)
 		
-		if temp := pack.Video(val, u); temp != nil{
+	}
+	
+	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
+	if err != nil{
+		return nil, 0, err
+	}
+	
+	for index, val := range videos{
+		
+		if temp := pack.Video(val, users[index]); temp != nil{
 			pack_videos = append(pack_videos, temp)
 
 		}
-		
-
 	}
-
 	return pack_videos, nextTime, nil
 }

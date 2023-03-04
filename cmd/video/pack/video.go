@@ -29,7 +29,7 @@ func User(u *db.User) *video.User {
 }
 
 // Users pack list of video info
-func Users(us []*db.User) []*video.User {
+func Users(us []*video.User) []*video.User {
 	users := make([]*video.User, 0)
 	for _, u := range us {
 		if temp := User(u); temp != nil {

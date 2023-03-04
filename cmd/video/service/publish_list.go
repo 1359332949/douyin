@@ -7,9 +7,10 @@ import (
 	// "fmt"
 	// "io"
 	// "log"
-	"github.com/1359332949/douyin/cmd/video/pack"
+	"github.com/1359332949/douyin/cmd/video/rpc"
 	"github.com/1359332949/douyin/cmd/video/dal/db"
 	"github.com/1359332949/douyin/kitex_gen/video"
+	"github.com/1359332949/douyin/cmd/video/pack"
 	// "github.com/1359332949/douyin/main/pkg/errno"
 )
 

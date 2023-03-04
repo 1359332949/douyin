@@ -47,8 +47,8 @@ func initUser() {
 }
 
 // QueryUser query list of user info by name
-func MgetUser(ctx context.Context, req *user.UserInfoRequest) ([]*user.User, error) {
-	resp, err := userClient.UserInfo(ctx, req)
+func MgetUser(ctx context.Context, req *user.MGetUserRequest) ([]*user.User, error) {
+	resp, err := userClient.MGetUser(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -61,6 +61,6 @@ func MgetUser(ctx context.Context, req *user.UserInfoRequest) ([]*user.User, err
 	// 	res[u.UserId] = u
 	// }
 	
-	return resp.User, nil
+	return resp.Users, nil
 
 }
