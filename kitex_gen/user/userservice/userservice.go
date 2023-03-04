@@ -23,6 +23,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"LogoutUser":   kitex.NewMethodInfo(logoutUserHandler, newUserServiceLogoutUserArgs, newUserServiceLogoutUserResult, false),
 		"RegisterUser": kitex.NewMethodInfo(registerUserHandler, newUserServiceRegisterUserArgs, newUserServiceRegisterUserResult, false),
 		"UserInfo":     kitex.NewMethodInfo(userInfoHandler, newUserServiceUserInfoArgs, newUserServiceUserInfoResult, false),
+		"MGetUser":     kitex.NewMethodInfo(mGetUserHandler, newUserServiceMGetUserArgs, newUserServiceMGetUserResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -110,6 +111,24 @@ func newUserServiceUserInfoResult() interface{} {
 	return user.NewUserServiceUserInfoResult()
 }
 
+func mGetUserHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceMGetUserArgs)
+	realResult := result.(*user.UserServiceMGetUserResult)
+	success, err := handler.(user.UserService).MGetUser(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceMGetUserArgs() interface{} {
+	return user.NewUserServiceMGetUserArgs()
+}
+
+func newUserServiceMGetUserResult() interface{} {
+	return user.NewUserServiceMGetUserResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -155,6 +174,16 @@ func (p *kClient) UserInfo(ctx context.Context, req *user.UserInfoRequest) (r *u
 	_args.Req = req
 	var _result user.UserServiceUserInfoResult
 	if err = p.c.Call(ctx, "UserInfo", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) MGetUser(ctx context.Context, req *user.MGetUserRequest) (r *user.MGetUserResponse, err error) {
+	var _args user.UserServiceMGetUserArgs
+	_args.Req = req
+	var _result user.UserServiceMGetUserResult
+	if err = p.c.Call(ctx, "MGetUser", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

@@ -65,3 +65,9 @@ func (p *UserInfoResponse) IsValid() error {
 	}
 	return nil
 }
+func (p *MGetUserRequest) IsValid() error {
+	return nil
+}
+func (p *MGetUserResponse) IsValid() error {
+	return nil
+}
