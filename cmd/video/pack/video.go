@@ -39,7 +39,7 @@ func Users(us []*db.User) []*video.User {
 	return videos
 }
 
-// User pack video info
+// Video pack of One Video info
 func Video(v *db.Video, author *db.User) *video.Video {
 	if v == nil {
 		return nil
@@ -57,7 +57,7 @@ func Video(v *db.Video, author *db.User) *video.Video {
 		}
 }
 
-// Users pack list of video info
+// Videos pack list of person
 func Videos(vs []*db.Video, author *db.User) []*video.Video {
 	videos := make([]*video.Video, 0)
 	for _, v := range vs {

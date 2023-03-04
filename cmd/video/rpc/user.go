@@ -63,22 +63,9 @@ func initUser() {
 	}
 	userClient = c
 }
-// MGetUsers multiple get list of user info
-func MGetUsers(ctx context.Context, userIDs []int64) ([]*User, error) {
-	res := make([]*User, 0)
-	if len(userIDs) == 0 {
-		return res, nil
-	}
-
-	if err := DB.WithContext(ctx).Where("id in ?", userIDs).Find(&res).Error; err != nil {
-		return nil, err
-	}
-	return res, nil
-}
-
 
 // QueryUser query list of user info by name
-func UserInfo(ctx context.Context, req *user.UserInfoRequest) ([]*User, error) {
+func MgetUser(ctx context.Context, req *user.UserInfoRequest) ([]*User, error) {
 	resp, err := userClient.UserInfo(ctx, req)
 	if err != nil {
 		return nil, err

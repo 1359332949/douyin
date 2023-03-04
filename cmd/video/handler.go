@@ -64,11 +64,11 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 	return resp, nil
 }
 
-// GetUserFeed implements the VideoServiceImpl interface.
-func (s *VideoServiceImpl) GetUserFeed(ctx context.Context, req *video.FeedRequest) (resp *video.FeedResponse, err error) {
+// GetVideoFeed implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) GetVideoFeed(ctx context.Context, req *video.FeedRequest) (resp *video.FeedResponse, err error) {
 	resp = new(user.FeedResponse)
 
-	vis, nextTime, err := service.NewGetUserFeedService(ctx).GetUserFeed(req)
+	vis, nextTime, err := service.NewGetVideoFeedService(ctx).GetVideoFeed(req)
 
 	log.Println(vis[0])
 	log.Println(nextTime)

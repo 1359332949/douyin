@@ -28,7 +28,7 @@ func (s *PublishListService) PublishList(req *user.PublishListRequest) ([]*user.
 	if err != nil {
 		return nil, err
 	}
-	users, err := db.QueryUserInfo(s.ctx, req.UserId)
+	users, err := rpc.MgetUser(s.ctx, req.UserId)
 	u := users[0]
 	videos := pack.Videos(videoModels, u)
 	// log.Println(videos[0].PlayUrl)

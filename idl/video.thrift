@@ -84,5 +84,5 @@ service VideoService {
     
     PublishActionResponse PublishAction(1: PublishActionRequest req)
     PublishListResponse PublishList(1: PublishListRequest req)
-    FeedResponse GetUserFeed (1:FeedRequest req)
+    FeedResponse GetVideoFeed (1:FeedRequest req)
 }

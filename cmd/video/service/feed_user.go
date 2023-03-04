@@ -7,9 +7,9 @@ import (
 	// "crypto/md5"
 	// "fmt"
 	// "io"
-	"github.com/1359332949/douyin/cmd/user/pack"
-	"github.com/1359332949/douyin/cmd/user/dal/db"
-	"github.com/1359332949/douyin/kitex_gen/user"
+	"github.com/1359332949/douyin/cmd/video/pack"
+	"github.com/1359332949/douyin/cmd/video/dal/db"
+	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/pkg/errno"
 )
 
@@ -26,8 +26,8 @@ func NewGetUserFeedService(ctx context.Context) *GetUserFeedService {
 	return &GetUserFeedService{ctx: ctx}
 }
 
-// get user info.
-func (s *GetUserFeedService) GetUserFeed(req *user.FeedRequest) (vis []*user.Video, nextTime int64, err error) {
+// get video info.
+func (s *GetUserFeedService) GetVideoFeed(req *video.FeedRequest) (vis []*video.Video, nextTime int64, err error) {
 	log.Println("----------------------kitex feed--------------------------------------")
 	videos, err := db.MGetVideos(s.ctx, LIMIT, req.LatestTime)
 	log.Println("-------------req.LatestTime----------")
@@ -45,15 +45,12 @@ func (s *GetUserFeedService) GetUserFeed(req *user.FeedRequest) (vis []*user.Vid
 	}
 	log.Println("-------------req.nextTime----------")
 	log.Println(nextTime)
-	// if vis, err = db.BuildVideos(s.ctx, videos, &req.UserId); err != nil {
-	// 	nextTime = time.Now().UnixMilli()
-	// 	return vis, nextTime, err
-	// }
+
 	//查询视频作者信息
 	nextTime = time.Now().UnixMilli()
-	pack_videos := make([]*user.Video, 0) 
+	pack_videos := make([]*video.Video, 0) 
 	for index, val := range videos{
-		users, err := db.QueryUserInfo(s.ctx, videos[index].AuthorID)
+		users, err := rpc.MgetUser(s.ctx, videos[index].AuthorID)
 		u := users[0]
 		if err != nil{
 			return nil, 0, err
