@@ -21,7 +21,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	methods := map[string]kitex.MethodInfo{
 		"PublishAction": kitex.NewMethodInfo(publishActionHandler, newVideoServicePublishActionArgs, newVideoServicePublishActionResult, false),
 		"PublishList":   kitex.NewMethodInfo(publishListHandler, newVideoServicePublishListArgs, newVideoServicePublishListResult, false),
-		"GetUserFeed":   kitex.NewMethodInfo(getUserFeedHandler, newVideoServiceGetUserFeedArgs, newVideoServiceGetUserFeedResult, false),
+		"GetVideoFeed":  kitex.NewMethodInfo(getVideoFeedHandler, newVideoServiceGetVideoFeedArgs, newVideoServiceGetVideoFeedResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "video",
@@ -73,22 +73,22 @@ func newVideoServicePublishListResult() interface{} {
 	return video.NewVideoServicePublishListResult()
 }
 
-func getUserFeedHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*video.VideoServiceGetUserFeedArgs)
-	realResult := result.(*video.VideoServiceGetUserFeedResult)
-	success, err := handler.(video.VideoService).GetUserFeed(ctx, realArg.Req)
+func getVideoFeedHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*video.VideoServiceGetVideoFeedArgs)
+	realResult := result.(*video.VideoServiceGetVideoFeedResult)
+	success, err := handler.(video.VideoService).GetVideoFeed(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newVideoServiceGetUserFeedArgs() interface{} {
-	return video.NewVideoServiceGetUserFeedArgs()
+func newVideoServiceGetVideoFeedArgs() interface{} {
+	return video.NewVideoServiceGetVideoFeedArgs()
 }
 
-func newVideoServiceGetUserFeedResult() interface{} {
-	return video.NewVideoServiceGetUserFeedResult()
+func newVideoServiceGetVideoFeedResult() interface{} {
+	return video.NewVideoServiceGetVideoFeedResult()
 }
 
 type kClient struct {
@@ -121,11 +121,11 @@ func (p *kClient) PublishList(ctx context.Context, req *video.PublishListRequest
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetUserFeed(ctx context.Context, req *video.FeedRequest) (r *video.FeedResponse, err error) {
-	var _args video.VideoServiceGetUserFeedArgs
+func (p *kClient) GetVideoFeed(ctx context.Context, req *video.FeedRequest) (r *video.FeedResponse, err error) {
+	var _args video.VideoServiceGetVideoFeedArgs
 	_args.Req = req
-	var _result video.VideoServiceGetUserFeedResult
-	if err = p.c.Call(ctx, "GetUserFeed", &_args, &_result); err != nil {
+	var _result video.VideoServiceGetVideoFeedResult
+	if err = p.c.Call(ctx, "GetVideoFeed", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

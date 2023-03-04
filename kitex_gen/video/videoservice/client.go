@@ -13,7 +13,7 @@ import (
 type Client interface {
 	PublishAction(ctx context.Context, req *video.PublishActionRequest, callOptions ...callopt.Option) (r *video.PublishActionResponse, err error)
 	PublishList(ctx context.Context, req *video.PublishListRequest, callOptions ...callopt.Option) (r *video.PublishListResponse, err error)
-	GetUserFeed(ctx context.Context, req *video.FeedRequest, callOptions ...callopt.Option) (r *video.FeedResponse, err error)
+	GetVideoFeed(ctx context.Context, req *video.FeedRequest, callOptions ...callopt.Option) (r *video.FeedResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -55,7 +55,7 @@ func (p *kVideoServiceClient) PublishList(ctx context.Context, req *video.Publis
 	return p.kClient.PublishList(ctx, req)
 }
 
-func (p *kVideoServiceClient) GetUserFeed(ctx context.Context, req *video.FeedRequest, callOptions ...callopt.Option) (r *video.FeedResponse, err error) {
+func (p *kVideoServiceClient) GetVideoFeed(ctx context.Context, req *video.FeedRequest, callOptions ...callopt.Option) (r *video.FeedResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetUserFeed(ctx, req)
+	return p.kClient.GetVideoFeed(ctx, req)
 }
