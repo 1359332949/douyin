@@ -3,7 +3,7 @@
 package main
 
 import (
-	router "github.com/YANGJUNYAN0715/douyin/tree/main/cmd/api/biz/router"
+	router "github.com/1359332949/douyin/cmd/api/biz/router"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
 

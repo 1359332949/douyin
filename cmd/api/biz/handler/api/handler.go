@@ -2,7 +2,7 @@
 package api
 
 import (
-	"github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
+	"github.com/1359332949/douyin/pkg/errno"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )

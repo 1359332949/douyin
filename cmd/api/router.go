@@ -4,12 +4,14 @@ package main
 
 import (
 	"context"
-	handler "github.com/YANGJUNYAN0715/douyin/tree/main/cmd/api/biz/handler"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/api/biz/handler/api"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
+	handler "github.com/1359332949/douyin/cmd/api/biz/handler"
+	"github.com/1359332949/douyin/cmd/api/biz/handler/api"
+	"github.com/1359332949/douyin/pkg/errno"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )
+
+
 
 // customizeRegister registers customize routers.
 func customizedRegister(r *server.Hertz) {

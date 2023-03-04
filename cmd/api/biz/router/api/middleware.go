@@ -6,8 +6,8 @@ import (
 	"context"
 	"fmt"
 	
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/api/biz/mw"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
+	"github.com/1359332949/douyin/cmd/api/biz/mw"
+	"github.com/1359332949/douyin/pkg/errno"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/middlewares/server/recovery"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
