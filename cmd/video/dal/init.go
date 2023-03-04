@@ -2,7 +2,7 @@
 
 package dal
 
-import "github.com/1359332949/douyin/cmd/user/dal/db"
+import "github.com/1359332949/douyin/cmd/video/dal/db"
 
 // Init init dal
 func Init() {

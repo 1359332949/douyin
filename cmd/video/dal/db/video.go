@@ -31,10 +31,10 @@ func (v *Video) TableName() string {
 // 	return
 // }
 
-func MGetVideosOfUserIDList(ctx context.Context, userID int64) ([]*Video, error) {
+func MGetVideosOfUserIDList(ctx context.Context, videoID int64) ([]*Video, error) {
 	// 获取视频列表
 	res := make([]*Video, 0)
-	if err := DB.WithContext(ctx).Model(&Video{}).Where("author_id = ?", userID).Order("id desc").Scan(&res).Error; err != nil{
+	if err := DB.WithContext(ctx).Model(&Video{}).Where("author_id = ?", videoID).Order("id desc").Scan(&res).Error; err != nil{
 		return nil, err
 	}
 
@@ -49,3 +49,18 @@ func CreateVideo(ctx context.Context, videos []*Video) error {
 	return nil
 }
 
+// GetUserFeed multiple get list of videos info
+func MGetVideos(ctx context.Context, limit int, latestTime int64) ([]*Video, error) {
+	videos := make([]*Video, 0)
+
+	if latestTime == 0 {
+		cur_time := int64(time.Now().UnixMilli())
+		latestTime = cur_time
+	}
+	conn := DB.WithContext(ctx)
+
+	if err := conn.Limit(limit).Order("updated_at desc").Find(&videos, "updated_at < ?", time.UnixMilli(latestTime)).Error; err != nil {
+		return nil, err
+	}
+	return videos, nil
+}
