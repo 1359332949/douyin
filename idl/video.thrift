@@ -1,4 +1,4 @@
-namespace go user
+namespace go video
 
 enum ErrCode {
     SuccessCode                = 0
