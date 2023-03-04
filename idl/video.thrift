@@ -15,7 +15,7 @@ struct BaseResp {
 
 struct Video {
     1: i64 id;
-    2: User author;
+    2: user.User author;
     3: string play_url;
     4: string cover_url;
     5: i64 favorite_count;
