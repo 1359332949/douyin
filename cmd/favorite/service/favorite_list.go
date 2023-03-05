@@ -54,13 +54,13 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	}
 	log.Println("3===============================",videoData,"==================================")
 	//获取点赞视频的用户id号
-	userIds := make([]int64, 0)
+	user_ids := make([]int64, 0)
 	for _, video := range videoData {
 		userIds = append(userIds, video.Author.Id)
 	}
 
 	//获取点赞视频的用户信息
-	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: userIds})
+	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
 	if err != nil {
 		return nil, err
 	}
@@ -91,7 +91,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 		//获取关注信息
 		go func() {
 			defer wg.Done()
-			relationMap, err = db.QueryRelationByIds(s.ctx, req.UserId, userIds)
+			relationMap, err = rpc.QueryRelationByIds(s.ctx, req.UserId, userIds)
 			if err != nil {
 				relationErr = err
 				return
