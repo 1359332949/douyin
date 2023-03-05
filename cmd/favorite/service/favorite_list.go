@@ -31,11 +31,11 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	log.Println("1===============================",req.UserId,"==================================")
 
 	
-	user, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: req.UserId})
+	u, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: req.UserId})
 	if err != nil {
 		return nil, err
 	}
-	if user == nil {
+	if u == nil {
 		return nil, errors.New("user not exist")
 	}
 
@@ -54,7 +54,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	//获取点赞视频的用户id号
 	user_ids := make([]int64, 0)
 	for _, video := range videoData {
-		userIds = append(userIds, video.Author.Id)
+		user_ids = append(user_ids, video.Author.Id)
 	}
 
 	//获取点赞视频的用户信息
@@ -68,11 +68,12 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	}
 
 	var favoriteMap map[int64]*db.Favorite
-	var relationMap map[int64]*relation.Relation
+	var follow_users []*user.User
+	// var relationMap map[int64]*relation.Relation
 	//if user not logged in
 	if req.UserId == -1 {
 		favoriteMap = nil
-		relationMap = nil
+		follow_users = nil
 	} else {
 		var wg sync.WaitGroup
 		wg.Add(2)
@@ -89,7 +90,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 		//获取关注信息
 		go func() {
 			defer wg.Done()
-			relationMap, err = rpc.IsFollow(s.ctx, req.UserId, userIds)
+			follow_users, err = rpc.RelationFollowList(s.ctx, &relation.RelationFollowListRequest{UserId: req.UserId})
 			if err != nil {
 				relationErr = err
 				return
@@ -105,7 +106,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 
 	}
 	// log.Println("4===============================",userIds,"==================================")
-	videoList := pack.VideoList(req.UserId, videoData, userMap, favoriteMap, relationMap)
+	videoList := pack.VideoList(req.UserId, videoData, userMap, favoriteMap, follow_users)
 	return videoList, nil
 
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	favorite "github.com/1359332949/douyin/kitex_gen/favorite/favoriteservice"
-	"log"
+	"github.com/1359332949/douyin/kitex_gen/favorite/favoriteservice"
+	// "log"
 	"net"
 	"github.com/1359332949/douyin/cmd/user/dal"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -39,7 +39,7 @@ func main() {
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
-	svr := userservice.NewServer(new(FavoriteServiceImpl),
+	svr := favoriteservice.NewServer(new(FavoriteServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),

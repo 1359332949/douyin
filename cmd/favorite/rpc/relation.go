@@ -4,6 +4,7 @@ import (
 	"context"
 	// "log"
 	"github.com/1359332949/douyin/kitex_gen/relation"
+	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/relation/relationservice"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/errno"
@@ -42,14 +43,38 @@ func InitRelation() {
 	relationClient = c
 }
 
-// // QueryVideoByVideoIds query relation info by relation ids 返回对应ids的视频s
-func IsFollow(ctx context.Context, req *relation.IsFollowRequest) ([]*video.Video, error) {
-	resp, err := relationClient.IsFollow(ctx, req)
+// // RelationFollowList query relation info by relation ids 返回对应ids用户
+func RelationFollowList(ctx context.Context, req *relation.RelationFollowListRequest) ([]*user.User, error) {
+	resp, err := relationClient.RelationFollowList(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 	if resp.StatusCode != 0 {
 		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
-	return resp, nil
+	return resp.UserList, nil
+}
+
+// // QueryFollowUsers query relation info by relation ids 返回对应ids用户
+func RelationFollowerList(ctx context.Context, req *relation.RelationFollowerListRequest) ([]*user.User, error) {
+	resp, err := relationClient.RelationFollowerList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
+	return resp.UserList, nil
+}
+
+// // QueryFollowUsers query relation info by relation ids 返回对应ids用户
+func RelationFriendList(ctx context.Context, req *relation.RelationFriendListRequest) ([]*user.User, error) {
+	resp, err := relationClient.RelationFriendList(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
+	return resp.UserList, nil
 }
