@@ -5,6 +5,7 @@ import (
 	"github.com/1359332949/douyin/cmd/relation/pack"
 	"github.com/1359332949/douyin/cmd/relation/service"
 	"github.com/1359332949/douyin/kitex_gen/relation"
+	relation "github.com/1359332949/douyin/kitex_gen/relation/relation"
 
 	// "log"
 
@@ -138,28 +139,4 @@ func (s *RelationServiceImpl) RelationFriendList(ctx context.Context, req *relat
 	return resp, nil
 }
 
-// IsFollow implements the RelationServiceImpl interface.
-func (s *RelationServiceImpl) IsFollow(ctx context.Context, req *relation.IsFollowRequest) (resp *relation.IsFollowResponse, err error) {
-	// TODO: Your code here...
-	resp = new(relation.IsFollowResponse)
-	// user:= ctx.Value(consts.IdentityKey)
-	if req.UserId == 0 {
-		// resp = pack.BuildBaseResp(errno.UserIDErr)
-		resp.StatusCode = pack.BuildBaseResp(errno.ParamErr).StatusCode
-		resp.StatusMsg = pack.BuildBaseResp(errno.ParamErr).StatusMsg
-		return resp, nil
-	}
 
-	is_follow, err := service.NewIsFollowService(ctx).IsFollow(req)
-	if err != nil {
-		// resp = pack.BuildBaseResp(err)
-		resp.StatusCode = pack.BuildBaseResp(err).StatusCode
-		resp.StatusMsg = pack.BuildBaseResp(err).StatusMsg
-		return resp, nil
-	}
-	// resp = pack.BuildBaseResp(errno.Success)
-	resp.StatusCode = pack.BuildBaseResp(errno.Success).StatusCode
-	resp.StatusMsg = pack.BuildBaseResp(errno.Success).StatusMsg
-	resp.IsFollow = is_follow
-	return resp, nil
-}

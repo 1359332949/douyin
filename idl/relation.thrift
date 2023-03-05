@@ -65,15 +65,6 @@ struct RelationFriendListResponse {
     2: string status_msg // 返回状态描述
     3: list<user.User> user_list // 用户列表
 }
-struct IsFollowListRequest {
-    1: i64 user_id // 用户id
-    2: i64 to_user_id // 关注用户id
-}
-struct IsFollowListResponse {
-    1: i32 status_code // 状态码，0-成功，其他值-失败
-    2: string status_msg // 返回状态描述
-    3: list<bool> is_follow_list // 用户列表
-}
 
 
 service RelationService {
@@ -81,6 +72,6 @@ service RelationService {
     RelationFollowListResponse RelationFollowList (1: RelationFollowListRequest req)
     RelationFollowerListResponse RelationFollowerList (1: RelationFollowerListRequest req)
     RelationFriendListResponse RelationFriendList (1: RelationFriendListRequest req)
-    IsFollowListResponse IsFollowList (1: IsFollowListRequest req)
+
 }
 

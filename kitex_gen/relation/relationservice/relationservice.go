@@ -23,7 +23,6 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"RelationFollowList":   kitex.NewMethodInfo(relationFollowListHandler, newRelationServiceRelationFollowListArgs, newRelationServiceRelationFollowListResult, false),
 		"RelationFollowerList": kitex.NewMethodInfo(relationFollowerListHandler, newRelationServiceRelationFollowerListArgs, newRelationServiceRelationFollowerListResult, false),
 		"RelationFriendList":   kitex.NewMethodInfo(relationFriendListHandler, newRelationServiceRelationFriendListArgs, newRelationServiceRelationFriendListResult, false),
-		"IsFollow":             kitex.NewMethodInfo(isFollowHandler, newRelationServiceIsFollowArgs, newRelationServiceIsFollowResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "relation",
@@ -111,24 +110,6 @@ func newRelationServiceRelationFriendListResult() interface{} {
 	return relation.NewRelationServiceRelationFriendListResult()
 }
 
-func isFollowHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*relation.RelationServiceIsFollowArgs)
-	realResult := result.(*relation.RelationServiceIsFollowResult)
-	success, err := handler.(relation.RelationService).IsFollow(ctx, realArg.Req)
-	if err != nil {
-		return err
-	}
-	realResult.Success = success
-	return nil
-}
-func newRelationServiceIsFollowArgs() interface{} {
-	return relation.NewRelationServiceIsFollowArgs()
-}
-
-func newRelationServiceIsFollowResult() interface{} {
-	return relation.NewRelationServiceIsFollowResult()
-}
-
 type kClient struct {
 	c client.Client
 }
@@ -174,16 +155,6 @@ func (p *kClient) RelationFriendList(ctx context.Context, req *relation.Relation
 	_args.Req = req
 	var _result relation.RelationServiceRelationFriendListResult
 	if err = p.c.Call(ctx, "RelationFriendList", &_args, &_result); err != nil {
-		return
-	}
-	return _result.GetSuccess(), nil
-}
-
-func (p *kClient) IsFollow(ctx context.Context, req *relation.IsFollowRequest) (r *relation.IsFollowResponse, err error) {
-	var _args relation.RelationServiceIsFollowArgs
-	_args.Req = req
-	var _result relation.RelationServiceIsFollowResult
-	if err = p.c.Call(ctx, "IsFollow", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
