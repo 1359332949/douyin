@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/1359332949/douyin/kitex_gen/comment/commentservice"
-	
-	// "log"
+	message "github.com/1359332949/douyin/kitex_gen/message/messageservice"
+	"log"
 	"net"
-	"github.com/1359332949/douyin/cmd/user/dal"
+	"github.com/1359332949/douyin/cmd/message/dal"
+
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -19,6 +19,7 @@ import (
 )
 
 
+
 func Init() {
 	dal.Init()
 	rpc.Init()
@@ -26,22 +27,23 @@ func Init() {
 	klog.SetLogger(kitexlogrus.NewLogger())
 	klog.SetLevel(klog.LevelInfo)
 }
+
 func main() {
 	r, err := etcd.NewEtcdRegistry([]string{consts.ETCDAddress})
 	if err != nil {
 		panic(err)
 	}
-	addr, err := net.ResolveTCPAddr(consts.TCP, consts.CommentServiceAddr)
+	addr, err := net.ResolveTCPAddr(consts.TCP, consts.MessageServiceAddr)
 	if err != nil {
 		panic(err)
 	}
 	Init()
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.CommentServiceName),
+		provider.WithServiceName(consts.MessageServiceName),
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
-	svr := commentservice.NewServer(new(CommentServiceImpl),
+	svr := messageservice.NewServer(new(MessageServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),
@@ -49,7 +51,7 @@ func main() {
 		server.WithMiddleware(mw.CommonMiddleware),
 		server.WithMiddleware(mw.ServerMiddleware),
 		server.WithSuite(tracing.NewServerSuite()),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.CommentServiceName}),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.MessageServiceName}),
 	)
 	err = svr.Run()
 
@@ -57,3 +59,5 @@ func main() {
 		klog.Fatal(err.Error())
 	}
 }
+
+
