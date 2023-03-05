@@ -17,17 +17,21 @@ const (
 	ApiServiceName  = "api"
 	UserServiceName = "user"
 	VideoServiceName = "video"
-	InteractServiceName = "interact"
+	FavoriteServiceName = "favorite"
+	CommentServiceName = "comment"
 	RelationServiceName = "relation"
 	MessageServiceName = "message"
 
 	MySQLDefaultDSN = "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local"
 	TCP             = "tcp"
+
 	UserServiceAddr = ":9000"
 	VideoServiceAddr = ":9001"
-	InteractServiceAddr = ":9002"
-	RelationServiceAddr = ":9003"
-	MessageServiceAddr = ":9004"
+	FavoriteServiceAddr = ":9002"
+	CommentServiceAddr = ":9003"
+	RelationServiceAddr = ":9004"
+	MessageServiceAddr = ":9005"
+
 	ExportEndpoint  = ":4317"
 	ETCDAddress     = "127.0.0.1:2379"
 	DefaultLimit    = 10

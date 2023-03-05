@@ -1,10 +1,10 @@
 package main
 
 import (
-	// "log"
+	favorite "github.com/1359332949/douyin/kitex_gen/favorite/favorite/favorite/favoriteservice"
+	"log"
 	"net"
 	"github.com/1359332949/douyin/cmd/user/dal"
-	"github.com/1359332949/douyin/kitex_gen/user/userservice"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -16,6 +16,8 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
 )
+
+
 func Init() {
 	dal.Init()
 	// klog init
@@ -27,17 +29,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	addr, err := net.ResolveTCPAddr(consts.TCP, consts.UserServiceAddr)
+	addr, err := net.ResolveTCPAddr(consts.TCP, consts.FavoriteServiceAddr)
 	if err != nil {
 		panic(err)
 	}
 	Init()
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.UserServiceName),
+		provider.WithServiceName(consts.FavoriteServiceName),
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
-	svr := userservice.NewServer(new(UserServiceImpl),
+	svr := userservice.NewServer(new(FavoriteServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),
@@ -45,7 +47,7 @@ func main() {
 		server.WithMiddleware(mw.CommonMiddleware),
 		server.WithMiddleware(mw.ServerMiddleware),
 		server.WithSuite(tracing.NewServerSuite()),
-		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.UserServiceName}),
+		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.FavoriteServiceName}),
 	)
 	err = svr.Run()
 
