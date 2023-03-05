@@ -19,7 +19,7 @@ import (
 
 func Init() {
 	dal.Init()
-	// rpc.Init()
+	rpc.Init()
 	// klog init
 	klog.SetLogger(kitexlogrus.NewLogger())
 	klog.SetLevel(klog.LevelInfo)

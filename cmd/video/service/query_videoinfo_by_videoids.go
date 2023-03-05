@@ -37,7 +37,7 @@ func (s *QueryVideoByVideoIdsService) QueryVideoByVideoIds(req *video.QueryVideo
 		
 	}
 	
-	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
+	users, err := rpc.MGetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
 	if err != nil{
 		return nil, err
 	}

@@ -9,7 +9,7 @@ import (
 	// "log"
 	"github.com/1359332949/douyin/cmd/relation/dal/db"
 	"github.com/1359332949/douyin/kitex_gen/relation"
-	"github.com/1359332949/douyin/kitex_gen/user"
+	// "github.com/1359332949/douyin/kitex_gen/user"
 	// "github.com/1359332949/douyin/pkg/errno"
 )
 
@@ -23,11 +23,11 @@ func NewIsFollowService(ctx context.Context) *IsFollowService {
 }
 
 // 查找关注列表
-func (s *IsFollowService) IsFollow(req *relation.IsFollowListRequest) (bool, error) {
+func (s *IsFollowService) IsFollow(req *relation.IsFollowRequest) (bool, error) {
 	relation, err := db.GetRelation(s.ctx, req.UserId, req.ToUserId)
 	is_follow := false
 	if err != nil{
-		return nil, err
+		return is_follow, err
 	}
 	if relation != nil{
 		is_follow = true

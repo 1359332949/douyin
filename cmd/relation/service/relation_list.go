@@ -6,7 +6,7 @@ import (
 	// "crypto/md5"
 	// "fmt"
 	// "io"
-	// "log"
+	"log"
 	"github.com/1359332949/douyin/cmd/relation/dal/db"
 	"github.com/1359332949/douyin/cmd/relation/rpc"
 	"github.com/1359332949/douyin/kitex_gen/relation"
@@ -34,7 +34,7 @@ func (s *RelationListService) RelationFollowList(req *relation.RelationFollowLis
 	for _, u := range relation_list{
 		userIDs= append(userIDs,int64(u.ToUserID))
 	}
-	users, err := rpc.MGetUsers(ctx,userIDs)
+	users, err := rpc.MGetUser(s.ctx, &user.MGetUserRequest{UserIds: userIDs})
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (s *RelationListService) RelationFollowList(req *relation.RelationFollowLis
 
 // 查找粉丝列表 
 func (s *RelationListService) RelationFollowerList(req *relation.RelationFollowerListRequest)  ([]*user.User, error) {
-	users, err := db.RelationFollowerList(s.ctx, req.UserId)
+	relation_list, err := db.RelationFollowerList(s.ctx, req.UserId)
 	if err != nil{
 		return nil,err
 	}
@@ -54,7 +54,7 @@ func (s *RelationListService) RelationFollowerList(req *relation.RelationFollowe
 	for _, u := range relation_list{
 		userIDs= append(userIDs,int64(u.FromUserID))
 	}
-	users, err := rpc.MGetUsers(ctx,userIDs)
+	users, err := rpc.MGetUser(s.ctx,&user.MGetUserRequest{UserIds: userIDs})
 	if err != nil {
 		return nil, err
 	}
@@ -92,7 +92,7 @@ func (s *RelationListService) RelationFriendList(req *relation.RelationFriendLis
 		}
 	}
 	log.Println(userIDs)
-	users, err := rpc.MGetUsers(ctx,userIDs)
+	users, err := rpc.MGetUser(s.ctx,&user.MGetUserRequest{UserIds: userIDs})
 	if err != nil {
 		return nil, err
 	}

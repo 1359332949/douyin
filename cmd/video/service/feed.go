@@ -58,7 +58,7 @@ func (s *GetVideoFeedService) GetVideoFeed(req *video.FeedRequest) (vis []*video
 		
 	}
 	
-	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
+	users, err := rpc.MGetUser(s.ctx, &user.MGetUserRequest{UserIds: user_ids})
 	if err != nil{
 		return nil, 0, err
 	}

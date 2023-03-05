@@ -218,26 +218,26 @@ func RelationFriendList(ctx context.Context, id int64) ([]*Relation, []*Relation
 }
 
 
-// 根据当前用户id和目标用户id获取关注信息
-func QueryRelationByIds(ctx context.Context, currentId int64, userIds []int64) (map[int64]*Relation, error) {
-	var relations []*Relation
-	err := DB.WithContext(ctx).Where("from_user_id = ? AND to_user_id IN ?", currentId, userIds).Find(&relations).Error
-	if err != nil {
-		klog.Error("query relation by ids " + err.Error())
-		return nil, err
-	}
-	relationMap := make(map[int64]*Relation)
-	for _, relation := range relations {
-		relationMap[relation.ToUserId] = relation
-	}
-	return relationMap, nil
-}
+// // 根据当前用户id和目标用户id获取关注信息
+// func QueryRelationByIds(ctx context.Context, currentId int64, userIds []int64) (map[int64]*Relation, error) {
+// 	var relations []*Relation
+// 	err := DB.WithContext(ctx).Where("from_user_id = ? AND to_user_id IN ?", currentId, userIds).Find(&relations).Error
+// 	if err != nil {
+// 		klog.Error("query relation by ids " + err.Error())
+// 		return nil, err
+// 	}
+// 	relationMap := make(map[int64]*Relation)
+// 	for _, relation := range relations {
+// 		relationMap[relation.ToUserId] = relation
+// 	}
+// 	return relationMap, nil
+// }
 
 // 增加当前用户的关注总数，增加其他用户的粉丝总数，创建关注记录
 func Create(ctx context.Context, currentId int64, toUserId int64) error {
 	relationRaw := &Relation{
-		UserId:   currentId,
-		ToUserId: toUserId,
+		FromUserID:   currentId,
+		ToUserID: toUserId,
 	}
 	DB.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
 		err := tx.Table("user").Where("id = ?", currentId).Update("follow_count", gorm.Expr("follow_count + ?", 1)).Error

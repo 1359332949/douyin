@@ -63,7 +63,7 @@ struct RelationFriendListRequest {
 struct RelationFriendListResponse {
     1: i32 status_code // 状态码，0-成功，其他值-失败
     2: string status_msg // 返回状态描述
-    3: list<FriendUser> user_list // 用户列表
+    3: list<user.User> user_list // 用户列表
 }
 struct IsFollowRequest {
     1: i64 user_id // 用户id
