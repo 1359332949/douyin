@@ -5,11 +5,11 @@ import (
 	"errors"
 	// "time"
 
-	"github.com/1359332949/douyin/kitex_gen/interact"
+	"github.com/1359332949/douyin/kitex_gen/favorite"
 	"github.com/1359332949/douyin/pkg/errno"
 )
 // BuildBaseResp build baseResp from error
-func BuildBaseResp(err error) *interact.BaseResp {
+func BuildBaseResp(err error) *favorite.BaseResp {
 	if err == nil {
 		return baseResp(errno.Success)
 	}
@@ -23,53 +23,42 @@ func BuildBaseResp(err error) *interact.BaseResp {
 	return baseResp(s)
 }
 
-func baseResp(err errno.ErrNo) *interact.BaseResp {
-	return &interact.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
+func baseResp(err errno.ErrNo) *favorite.BaseResp {
+	return &favorite.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
-// BuildFavoriteBaseResp build interact baseResp from error
-func BuildFavoriteBaseResp(err error) *interact.FavoriteActionResponse {
+// BuildFavoriteBaseResp build favorite baseResp from error
+func BuildFavoriteBaseResp(err error) *favorite.FavoriteActionResponse {
 	if err == nil {
-		return interactbaseResp(errno.Success)
+		return favoritebaseResp(errno.Success)
 	}
 
 	e := errno.ErrNo{}
 	if errors.As(err, &e) {
-		return interactbaseResp(e)
+		return favoritebaseResp(e)
 	}
 
 	s := errno.ServiceErr.WithMessage(err.Error())
-	return interactbaseResp(s)
+	return favoritebaseResp(s)
 }
 
-func interactbaseResp(err errno.ErrNo) *interact.FavoriteActionResponse {
-	return &interact.FavoriteActionResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
+func favoritebaseResp(err errno.ErrNo) *favorite.FavoriteActionResponse {
+	return &favorite.FavoriteActionResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
 
-func BuildFavoriteListBaseResp(err error) *interact.FavoriteListResponse {
+func BuildFavoriteListBaseResp(err error) *favorite.FavoriteListResponse {
 	if err == nil {
-		return interactListbaseResp(errno.Success)
+		return favoriteListbaseResp(errno.Success)
 	}
 
 	e := errno.ErrNo{}
 	if errors.As(err, &e) {
-		return interactListbaseResp(e)
+		return favoriteListbaseResp(e)
 	}
 
 	s := errno.ServiceErr.WithMessage(err.Error())
-	return interactListbaseResp(s)
+	return favoriteListbaseResp(s)
 }
 
-func interactListbaseResp(err errno.ErrNo) *interact.FavoriteListResponse {
-	return &interact.FavoriteListResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
-}
-
-func Err1(err error) *interact.CommentActionResponse {
-	msg := err.Error()
-	return &interact.CommentActionResponse{StatusCode: errno.CommentError, StatusMsg: msg}
-}
-
-func Err2(err error) *interact.CommentListResponse {
-	msg := err.Error()
-	return &interact.CommentListResponse{StatusCode: errno.SuccessCode, StatusMsg: msg,
-		CommentList: []*interact.Comment{}}
+func favoriteListbaseResp(err errno.ErrNo) *favorite.FavoriteListResponse {
+	return &favorite.FavoriteListResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }

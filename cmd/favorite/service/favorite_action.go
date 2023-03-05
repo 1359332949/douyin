@@ -26,7 +26,7 @@ func (s *FavoriteActionService) FavoriteAction(req *favorite.FavoriteActionReque
 
 	log.Println("------------------------",req.VideoId,"-----------------------")
 	// videos, err := rpc.QueryVideoByVideoIds(s.ctx, []int64{req.VideoId})
-	videos, err := rpc.QueryVideoByVideoIds(s.ctx, &video.FeedRequest)
+	videos, err := rpc.QueryVideoByVideoIds(s.ctx, &video.QueryVideoByVideoIdsRequest{VideoIds: []int64{req.VideoId}})
 	log.Println("------------------------",videos[0],"-----------------------")
 	if err != nil {
 		return err

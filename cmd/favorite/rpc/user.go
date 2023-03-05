@@ -17,24 +17,24 @@ import (
 
 var userClient userservice.Client
 
-func Init() {
+func InitUser() {
 	r, err := etcd.NewEtcdResolver([]string{consts.ETCDAddress})
 	if err != nil {
 		panic(err)
 	}
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ApiServiceName),
+		provider.WithServiceName(consts.FavoriteServiceName),
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
 	c, err := userservice.NewClient(
-		consts.UserServiceName,
+		consts.UserServiceName, // DestService
 		client.WithResolver(r),
 		client.WithMuxConnection(1),
 		client.WithMiddleware(mw.CommonMiddleware),
 		client.WithInstanceMW(mw.ClientMiddleware),
 		client.WithSuite(tracing.NewClientSuite()),
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.ApiServiceName}),
+		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.FavoriteServiceName}),
 	)
 	if err != nil {
 		panic(err)
@@ -42,8 +42,20 @@ func Init() {
 	userClient = c
 }
 
+// MgetUser query list of user info by name
+func MgetUser(ctx context.Context, req *user.MGetUserRequest) ([]*user.User, error) {
+	resp, err := userClient.MGetUser(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
 
-func Info(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
+	return resp.Users, nil
+
+}
+func QueryUserInfo(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
 	resp, err := userClient.UserInfo(ctx, req)
 	if err != nil {
 		return resp.User, err
@@ -53,15 +65,4 @@ func Info(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
 	}
 	log.Println(resp.User)
 	return resp.User, nil
-}
-// QueryUserInfo query list of user info
-func QueryUserInfo(ctx context.Context, uid int64) ([]*User, error) {
-	res := make([]*User, 0)
-	if err := DB.WithContext(ctx).Where("id = ?", uid).Find(&res).Error; err != nil {
-		return nil, err
-	}
-	// if res != 1{
-	// 	return 
-	// }
-	return res, nil
 }

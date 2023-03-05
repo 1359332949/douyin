@@ -2,7 +2,7 @@ package rpc
 
 import (
 	"context"
-	"log"
+	// "log"
 	"github.com/1359332949/douyin/kitex_gen/video"
 	"github.com/1359332949/douyin/kitex_gen/video/videoservice"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -17,7 +17,7 @@ import (
 
 var videoClient videoservice.Client
 
-func Init() {
+func InitVideo() {
 	r, err := etcd.NewEtcdResolver([]string{consts.ETCDAddress})
 	if err != nil {
 		panic(err)
@@ -42,15 +42,14 @@ func Init() {
 	videoClient = c
 }
 
-
-func Info(ctx context.Context, req *video.UserInfoRequest) (*video.User, error) {
-	resp, err := videoClient.UserInfo(ctx, req)
+// QueryVideoByVideoIds query video info by video ids 返回对应ids的视频s
+func QueryVideoByVideoIds(ctx context.Context, req *video.QueryVideoByVideoIdsRequest) ([]*video.Video, error) {
+	resp, err := videoClient.QueryVideoByVideoIds(ctx, req)
 	if err != nil {
-		return resp.User, err
+		return nil, err
 	}
 	if resp.StatusCode != 0 {
-		return resp.User, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
-	log.Println(resp.User)
-	return resp.User, nil
+	return resp.VideoList, nil
 }

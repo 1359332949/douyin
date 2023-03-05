@@ -1,7 +1,7 @@
 package main
 
 import (
-	comment "github.com/1359332949/douyin/kitex_gen/comment/comment/comment/commentservice"
+	comment "github.com/1359332949/douyin/kitex_gen/comment/commentservice"
 	
 	"log"
 	"net"

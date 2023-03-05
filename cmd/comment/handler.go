@@ -3,11 +3,11 @@ package main
 import (
 	"context"
 	comment "github.com/1359332949/douyin/kitex_gen"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/pack"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/service"
+	"github.com/1359332949/douyin/cmd/comment/pack"
+	"github.com/1359332949/douyin/cmd/comment/service"
 	// "time"
 
-	"github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
+	"github.com/1359332949/douyin/pkg/errno"
 	"log"
 )
 

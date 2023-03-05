@@ -5,7 +5,10 @@ import (
 	"errors"
 	"github.com/1359332949/douyin/cmd/favorite/dal/db"
 	"github.com/1359332949/douyin/cmd/favorite/pack"
+	"github.com/1359332949/douyin/cmd/favorite/rpc"
 	"github.com/1359332949/douyin/kitex_gen/favorite"
+	"github.com/1359332949/douyin/kitex_gen/user"
+	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/pkg/consts"
 	// "github.com/1359332949/douyin/pkg/jwt"
 	"sync"
@@ -22,17 +25,19 @@ func NewFavoriteListService(ctx context.Context) *FavoriteListService {
 }
 
 // FavoriteList get video information that users mainke
-func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([]*favorite.Video, error) {
+func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([]*video.Video, error) {
 	//获取用户id
 	// Jwt := jwt.NewJWT([]byte(consts.SecretKey))
 	// req.UserId, _ := Jwt.CheckToken(req.Token)
 	log.Println("1===============================",req.UserId,"==================================")
 	//检查用户是否存在
-	user, err := db.QueryUserByIds(s.ctx, []int64{req.UserId})
+	// user, err := rpc.QueryUserByIds(s.ctx, []int64{req.UserId})
+	
+	user, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: req.UserId})
 	if err != nil {
 		return nil, err
 	}
-	if len(user) == 0 {
+	if user == nil {
 		return nil, errors.New("user not exist")
 	}
 
@@ -43,7 +48,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	}
 	log.Println("2===============================",videoIds[0],"==================================")
 	//获取点赞视频的信息
-	videoData, err := db.QueryVideoByVideoIds(s.ctx, videoIds)
+	videoData, err := rpc.QueryVideoByVideoIds(s.ctx, &video.QueryVideoByVideoIdsRequest{VideoIds: videoIds})
 	if err != nil {
 		return nil, err
 	}
@@ -51,17 +56,17 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	//获取点赞视频的用户id号
 	userIds := make([]int64, 0)
 	for _, video := range videoData {
-		userIds = append(userIds, video.AuthorID)
+		userIds = append(userIds, video.Author.Id)
 	}
 
 	//获取点赞视频的用户信息
-	users, err := db.QueryUserByIds(s.ctx, userIds)
+	users, err := rpc.MgetUser(s.ctx, &user.MGetUserRequest{UserIds: userIds})
 	if err != nil {
 		return nil, err
 	}
 	userMap := make(map[int64]*db.User)
 	for _, user := range users {
-		userMap[int64(user.ID)] = user
+		userMap[int64(user.Id)] = user
 	}
 
 	var favoriteMap map[int64]*db.Favorite

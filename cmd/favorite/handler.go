@@ -4,11 +4,11 @@ import (
 	"context"
 	favorite "github.com/1359332949/douyin/kitex_gen/favorite"
 	
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/favorite/pack"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/favorite/service"
+	"github.com/1359332949/douyin/cmd/favorite/pack"
+	"github.com/1359332949/douyin/cmd/favorite/service"
 	// "time"
 
-	"github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
+	"github.com/1359332949/douyin/pkg/errno"
 	// "log"
 
 )

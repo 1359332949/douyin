@@ -1,7 +1,7 @@
 package main
 
 import (
-	favorite "github.com/1359332949/douyin/kitex_gen/favorite/favorite/favorite/favoriteservice"
+	favorite "github.com/1359332949/douyin/kitex_gen/favorite/favoriteservice"
 	"log"
 	"net"
 	"github.com/1359332949/douyin/cmd/user/dal"
