@@ -42,3 +42,18 @@ func initUser() {
 	}
 	userClient = c
 }
+
+
+// MgetUser query list of user info by name
+func MgetUser(ctx context.Context, req *user.MGetUserRequest) ([]*user.User, error) {
+	resp, err := userClient.MGetUser(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
+
+	return resp.Users, nil
+
+}

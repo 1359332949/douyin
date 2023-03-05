@@ -5,13 +5,14 @@ import (
 	"context"
 	// "fmt"
 	// "time"
-	"log"
+	// "log"
 	"github.com/1359332949/douyin/pkg/consts"
 	// "github.com/1359332949/douyin/cmd/user/dal/db"
-	"github.com/1359332949/douyin/kitex_gen/relation"
-	"github.com/1359332949/douyin/kitex_gen/user"
+	// "github.com/1359332949/douyin/kitex_gen/relation"
+	// "github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/pkg/errno"
 	"gorm.io/gorm"
+	"github.com/cloudwego/kitex/pkg/klog"
 )
 
 
@@ -26,7 +27,7 @@ type Relation struct {
 }
 
 
-func (u *Relation) TableName() string {
+func (r *Relation) TableName() string {
 	return consts.RelationTableName
 }
 
@@ -40,19 +41,19 @@ func GetRelation(ctx context.Context, uid int64, tid int64) (*Relation, error) {
 	}
 	return relations, nil
 }
-//根据id获取user
-// MGetUsers multiple get list of user info
-func MGetUsers(ctx context.Context, userIDs []int64) ([]*user.User, error) {
-	res := make([]*user.User, 0)
-	if len(userIDs) == 0 {
-		return res, nil
-	}
-	// 从usr表中根据id查找到users的信息
-	if err := DB.Table(consts.UserTableName).WithContext(ctx).Where("id in ?", userIDs).Find(&res).Error; err != nil {
-		return nil, err
-	}
-	return res, nil
-}
+// //根据id获取user
+// // MGetUsers multiple get list of user info
+// func MGetUsers(ctx context.Context, userIDs []int64) ([]*user.User, error) {
+// 	res := make([]*user.User, 0)
+// 	if len(userIDs) == 0 {
+// 		return res, nil
+// 	}
+// 	// 从usr表中根据id查找到users的信息
+// 	if err := DB.Table(consts.UserTableName).WithContext(ctx).Where("id in ?", userIDs).Find(&res).Error; err != nil {
+// 		return nil, err
+// 	}
+// 	return res, nil
+// }
 // NewAction creates a new Relation
 // uid关注tid，所以uid的关注人数加一，tid的粉丝数加一
 func NewAction(ctx context.Context, uid int64, tid int64) error {
@@ -134,84 +135,86 @@ func DelAction(ctx context.Context, uid int64, tid int64) error {
 }
 
 // RelationFollowList returns the Following List.
-func RelationFollowList(ctx context.Context, uid int64) ([]*user.User, error) {
+func RelationFollowList(ctx context.Context, uid int64) ([]*Relation, error) {
 	var RelationList []*Relation
 	err := DB.WithContext(ctx).Where("from_user_id = ?", uid).Find(&RelationList).Error
 	if err != nil {
 		return nil, err
 	}
-	userIDs :=make([]int64,0)
-	for _,u := range RelationList{
-		userIDs= append(userIDs,int64(u.ToUserID))
-	}
-	users, err := MGetUsers(ctx,userIDs)
-	if err != nil {
-		return nil, err
-	}
-	// log.Println(users)
-	return BuildUsers(ctx,uid,users)
+	return RelationList, nil
+	// userIDs :=make([]int64,0)
+	// for _,u := range RelationList{
+	// 	userIDs= append(userIDs,int64(u.ToUserID))
+	// }
+	// users, err := MGetUsers(ctx,userIDs)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// // log.Println(users)
+	// return BuildUsers(ctx,uid,users)
 }
 
 // RelationFollowerList returns the Follower List.
-func RelationFollowerList(ctx context.Context, tid int64) ([]*user.User, error) {
+func RelationFollowerList(ctx context.Context, tid int64) ([]*Relation, error) {
 	var RelationList []*Relation
 	err := DB.WithContext(ctx).Where("to_user_id = ?", tid).Find(&RelationList).Error
-	if err != nil {
+	if err != nil { 
 		return nil, err
 	}
-	userIDs :=make([]int64,0)
-	for _,u := range RelationList{
-		userIDs= append(userIDs,int64(u.FromUserID))
-	}
-	users, err := MGetUsers(ctx,userIDs)
-	if err != nil {
-		return nil, err
-	}
-	return BuildUsers(ctx,tid,users)
+	return RelationList, nil
+	// userIDs :=make([]int64,0)
+	// for _,u := range RelationList{
+	// 	userIDs= append(userIDs,int64(u.FromUserID))
+	// }
+	// users, err := MGetUsers(ctx,userIDs)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return BuildUsers(ctx,tid,users)
 }
 
 // 朋友：相互关注者->粉丝和关注者的交集
 // RelationFriendList returns the Follower List.
-func RelationFriendList(ctx context.Context, id int64) ([]*relation.FriendUser, error) {
+func RelationFriendList(ctx context.Context, id int64) ([]*Relation, []*Relation, error) {
 	var LRelationList []*Relation //关注者
 	var RRelationList []*Relation //粉丝
 	err := DB.WithContext(ctx).Where("from_user_id = ?", id).Find(&LRelationList).Error
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	err = DB.WithContext(ctx).Where("to_user_id = ?", id).Find(&RRelationList).Error
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
+	return LRelationList, RRelationList, nil
+	// LuserIDs :=make([]int64,0)
+	// for _,u := range LRelationList{
+	// 	LuserIDs= append(LuserIDs,int64(u.ToUserID))
+	// 	log.Println(LuserIDs)
+	// }
 
-	LuserIDs :=make([]int64,0)
-	for _,u := range LRelationList{
-		LuserIDs= append(LuserIDs,int64(u.ToUserID))
-		log.Println(LuserIDs)
-	}
+	// RuserIDs :=make([]int64,0)
+	// for _,u := range RRelationList{
+	// 	RuserIDs= append(RuserIDs,int64(u.FromUserID))
+	// 	log.Println(RuserIDs)
+	// }
+	// userIDs :=make([]int64,0)
 
-	RuserIDs :=make([]int64,0)
-	for _,u := range RRelationList{
-		RuserIDs= append(RuserIDs,int64(u.FromUserID))
-		log.Println(RuserIDs)
-	}
-	userIDs :=make([]int64,0)
-
-	m := make(map[int64]int)
-	for _,v :=range LuserIDs{
-		m[v]++
-	}
-	for _,v :=range RuserIDs{
-		if m[v]==1{
-			userIDs = append(userIDs,v)
-		}
-	}
-	log.Println(userIDs)
-	users, err := MGetUsers(ctx,userIDs)
-	if err != nil {
-		return nil, err
-	}
-	return BuildFriendUsers(ctx,id,users)
+	// m := make(map[int64]int)
+	// for _,v :=range LuserIDs{
+	// 	m[v]++
+	// }
+	// for _,v :=range RuserIDs{
+	// 	if m[v]==1{
+	// 		userIDs = append(userIDs,v)
+	// 	}
+	// }
+	// log.Println(userIDs)
+	// users, err := MGetUsers(ctx,userIDs)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// return BuildFriendUsers(ctx,id,users)
 }
 
 

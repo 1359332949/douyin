@@ -9,7 +9,7 @@ import (
 )	
 
 // VideoList pack video list info
-func VideoList(currentId int64, videoData []*video.Video, userMap map[int64]*user.User, favoriteMap map[int64]*db.Favorite, relationMap map[int64]*relation.Relation) []*video.Video {
+func VideoList(currentId int64, videoData []*video.Video, userMap map[int64]*user.User, favoriteMap map[int64]*db.Favorite, relationMap map[int64]*relation.	Relation) []*video.Video {
 	videoList := make([]*video.Video, 0)
 	for _, video := range videoData {
 		videoUser, ok := userMap[video.Author.Id]
