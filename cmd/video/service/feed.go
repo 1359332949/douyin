@@ -32,7 +32,7 @@ func NewGetVideoFeedService(ctx context.Context) *GetVideoFeedService {
 // get video info.
 func (s *GetVideoFeedService) GetVideoFeed(req *video.FeedRequest) (vis []*video.Video, nextTime int64, err error) {
 	log.Println("----------------------kitex feed--------------------------------------")
-	videos, err := db.MGetVideos(s.ctx, LIMIT, req.LatestTime)
+	videos, err := db.MGetFeedVideos(s.ctx, LIMIT, req.LatestTime)
 	log.Println("-------------req.LatestTime----------")
 	log.Println(req.LatestTime)
 	log.Println(videos[0])

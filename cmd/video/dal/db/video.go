@@ -42,10 +42,8 @@ func (v *Video) TableName() string {
 	return consts.VideoTableName
 }
 
-// func UserGetFeed(ctx context.Context, latestTime *int64) ([]*Video, error) {
-// 	return
-// }
 
+// 返回某一用户的视频表
 func MGetVideosOfUserIDList(ctx context.Context, videoID int64) ([]*Video, error) {
 	// 获取视频列表
 	res := make([]*Video, 0)
@@ -64,8 +62,8 @@ func CreateVideo(ctx context.Context, videos []*Video) error {
 	return nil
 }
 
-// GetUserFeed multiple get list of videos info
-func MGetVideos(ctx context.Context, limit int, latestTime int64) ([]*Video, error) {
+// GetFeedVideos  get list of videos info
+func MGetFeedVideos(ctx context.Context, limit int, latestTime int64) ([]*Video, error) {
 	videos := make([]*Video, 0)
 
 	if latestTime == 0 {
@@ -75,6 +73,16 @@ func MGetVideos(ctx context.Context, limit int, latestTime int64) ([]*Video, err
 	conn := DB.WithContext(ctx)
 
 	if err := conn.Limit(limit).Order("updated_at desc").Find(&videos, "updated_at < ?", time.UnixMilli(latestTime)).Error; err != nil {
+		return nil, err
+	}
+	return videos, nil
+}
+// QueryVideoByVideoIds query video info by video ids 返回对应ids的视频s
+func QueryVideoByVideoIds(ctx context.Context, videoId []int64) ([]*Video, error) {
+	var videos []*Video
+	err := DB.WithContext(ctx).Where("id in (?)", videoId).Find(&videos).Error
+	if err != nil {
+		klog.Error("QueryVideoByVideoIds error " + err.Error())
 		return nil, err
 	}
 	return videos, nil
