@@ -10,6 +10,7 @@ import (
 	"github.com/1359332949/douyin/cmd/video/rpc"
 	"github.com/1359332949/douyin/cmd/video/dal/db"
 	"github.com/1359332949/douyin/kitex_gen/video"
+	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/cmd/video/pack"
 	// "github.com/1359332949/douyin/main/pkg/errno"
 )
@@ -29,9 +30,10 @@ func (s *PublishListService) PublishList(req *video.PublishListRequest) ([]*vide
 	if err != nil {
 		return nil, err
 	}
-	users, err := rpc.MgetUser(s.ctx, req.UserId)
-	u := users[0]
-	videos := pack.Videos(videoModels, u)
+	u, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: req.UserId})
+	// u := users[0]
+	
+	videos := pack.VideosByOne(videoModels, u)
 	// log.Println(videos[0].PlayUrl)
 	return videos, nil
 }

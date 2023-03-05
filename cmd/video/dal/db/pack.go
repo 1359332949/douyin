@@ -3,7 +3,7 @@ package db
 import (
 	"context"
 	"github.com/1359332949/douyin/kitex_gen/video"
-	
+	"github.com/1359332949/douyin/kitex_gen/user"
 	//"github.com/YANGJUNYAN0715/douyin/tree/zhao/cmd/video/dal/db"
 	//"gorm.io/gorm"
 )
@@ -22,7 +22,7 @@ func BuildVideo(ctx context.Context, v *Video, fromID int64) (*video.Video, erro
 	// if err != nil {
 	// 	return nil, err
 	// }
-	author :=video.User{};
+	author :=user.User{};
 	
 	
 	favorite_count := int64(v.FavoriteCount)

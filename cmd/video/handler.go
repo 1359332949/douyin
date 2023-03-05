@@ -6,7 +6,7 @@ import (
 
 
 	// "fmt"
-	// "log"
+	"log"
 	"github.com/1359332949/douyin/cmd/video/pack"
 	"github.com/1359332949/douyin/cmd/video/service"
 	"github.com/1359332949/douyin/pkg/errno"
@@ -14,11 +14,12 @@ import (
 
 // VideoServiceImpl implements the last service interface defined in the IDL.
 
+type VideoServiceImpl struct{}
 
 // PublishAction implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.PublishActionRequest) (resp *video.PublishActionResponse, err error) {
 	// TODO: Your code here...
-	resp = new(user.PublishActionResponse)
+	resp = new(video.PublishActionResponse)
 
 	if err = req.IsValid(); err != nil {
 		resp.StatusCode = pack.BuildBaseResp(errno.ParamErr).StatusCode
@@ -42,7 +43,7 @@ func (s *VideoServiceImpl) PublishAction(ctx context.Context, req *video.Publish
 // PublishList implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishListRequest) (resp *video.PublishListResponse, err error) {
 	// TODO: Your code here...
-	resp = new(user.PublishListResponse)
+	resp = new(video.PublishListResponse)
 
 	if err = req.IsValid(); err != nil {
 		resp.StatusCode = pack.BuildBaseResp(errno.ParamErr).StatusCode
@@ -66,7 +67,7 @@ func (s *VideoServiceImpl) PublishList(ctx context.Context, req *video.PublishLi
 
 // GetVideoFeed implements the VideoServiceImpl interface.
 func (s *VideoServiceImpl) GetVideoFeed(ctx context.Context, req *video.FeedRequest) (resp *video.FeedResponse, err error) {
-	resp = new(user.FeedResponse)
+	resp = new(video.FeedResponse)
 
 	vis, nextTime, err := service.NewGetVideoFeedService(ctx).GetVideoFeed(req)
 

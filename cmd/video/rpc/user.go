@@ -55,12 +55,18 @@ func MgetUser(ctx context.Context, req *user.MGetUserRequest) ([]*user.User, err
 	if resp.StatusCode != 0 {
 		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
-	
-	// res := make([]*user.User)
-	// for _, u := range resp.Users {
-	// 	res[u.UserId] = u
-	// }
-	
+
 	return resp.Users, nil
 
+}
+// QueryUserInfo query list of user info
+func QueryUserInfo(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
+	resp, err := userClient.UserInfo(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 0 {
+		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
+	}
+	return resp.User, nil
 }

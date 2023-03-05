@@ -8,12 +8,12 @@ import (
 )
 
 // User pack video info
-func User(u *db.User) *video.User {
+func User(u *db.User) *user.User {
 	if u == nil {
 		return nil
 	}
 
-	return &video.User{
+	return &user.User{
 		Id: int64(u.ID), 
 		Name: u.Username,
 		FollowCount: int64(u.FollowCount),
@@ -59,6 +59,21 @@ func QueryVideo(v *db.Video) *video.Video {
 
 // Videos pack list of person
 func Videos(vs []*db.Video, author []*user.User) []*video.Video {
+	videos := make([]*video.Video, 0)
+	for index, v := range vs {
+		temp := QueryVideo(v)
+		if temp != nil {
+			videos = append(videos, temp)
+			videos[index].Author =  author[index]
+		}
+		
+	}
+	return videos
+}
+
+
+// Videos pack list of person
+func VideosByOne(vs []*db.Video, author *user.User) []*video.Video {
 	videos := make([]*video.Video, 0)
 	for index, v := range vs {
 		temp := QueryVideo(v)
