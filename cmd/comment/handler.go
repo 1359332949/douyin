@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	comment "github.com/1359332949/douyin/kitex_gen"
+	comment "github.com/1359332949/douyin/kitex_gen/comment"
 	"github.com/1359332949/douyin/cmd/comment/pack"
 	"github.com/1359332949/douyin/cmd/comment/service"
 	// "time"

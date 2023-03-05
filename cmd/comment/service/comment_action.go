@@ -3,12 +3,14 @@ package service
 import (
 	"context"
 	// "errors"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/dal/db"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/kitex_gen/comment"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/pack"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/consts"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/jwt"
+	"github.com/1359332949/douyin/cmd/comment/dal/db"
+	"github.com/1359332949/douyin/kitex_gen/comment"
+	"github.com/1359332949/douyin/kitex_gen/user"
+	"github.com/1359332949/douyin/cmd/comment/pack"
+	"github.com/1359332949/douyin/cmd/comment/rpc"
+	// "github.com/1359332949/douyin/pkg/consts"
+	// "github.com/1359332949/douyin/pkg/errno"
+	// "github.com/1359332949/douyin/pkg/jwt"
 	// "log"
 	"errors"
 	"time"
@@ -37,12 +39,12 @@ func (s *CommentActionService) CommentAction(req *comment.CommentActionRequest) 
 		if err := db.CreateComment(s.ctx, cmt); err != nil {
 			return nil, err
 		}
-		user, err := db.QueryUserInfo(s.ctx, cmt.UserId)
+		u, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: cmt.UserId})
 		
 		if err != nil {
 			return nil, err
 		}
-		u := user[0]
+		// u := user[0]
 		
 		comment := pack.Comment(cmt, u)
 		return comment, nil
@@ -59,11 +61,11 @@ func (s *CommentActionService) CommentAction(req *comment.CommentActionRequest) 
 		if err := db.DeleteComment(s.ctx, cmt); err != nil {
 			return nil, err
 		}
-		user, err := db.QueryUserInfo(s.ctx, tmp.UserId)
+		u, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: tmp.UserId})
 		if err != nil {
 			return nil, err
 		}
-		u := user[0]
+		// u := user[0]
 		
 		
 		comment := pack.Comment(tmp, u)

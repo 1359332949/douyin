@@ -23,7 +23,7 @@ func Init() {
 		panic(err)
 	}
 	provider.NewOpenTelemetryProvider(
-		provider.WithServiceName(consts.ApiServiceName),
+		provider.WithServiceName(consts.CommentServiceName),
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
@@ -34,7 +34,7 @@ func Init() {
 		client.WithMiddleware(mw.CommonMiddleware),
 		client.WithInstanceMW(mw.ClientMiddleware),
 		client.WithSuite(tracing.NewClientSuite()),
-		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.ApiServiceName}),
+		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: consts.CommentServiceName}),
 	)
 	if err != nil {
 		panic(err)
@@ -43,7 +43,8 @@ func Init() {
 }
 
 
-func Info(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
+// QueryUserInfo query list of user info
+func QueryUserInfo(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
 	resp, err := userClient.UserInfo(ctx, req)
 	if err != nil {
 		return resp.User, err
@@ -53,15 +54,4 @@ func Info(ctx context.Context, req *user.UserInfoRequest) (*user.User, error) {
 	}
 	log.Println(resp.User)
 	return resp.User, nil
-}
-// QueryUserInfo query list of user info
-func QueryUserInfo(ctx context.Context, uid int64) ([]*User, error) {
-	res := make([]*User, 0)
-	if err := DB.WithContext(ctx).Where("id = ?", uid).Find(&res).Error; err != nil {
-		return nil, err
-	}
-	// if res != 1{
-	// 	return 
-	// }
-	return res, nil
 }

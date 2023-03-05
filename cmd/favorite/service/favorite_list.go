@@ -7,6 +7,7 @@ import (
 	"github.com/1359332949/douyin/cmd/favorite/pack"
 	"github.com/1359332949/douyin/cmd/favorite/rpc"
 	"github.com/1359332949/douyin/kitex_gen/favorite"
+	"github.com/1359332949/douyin/kitex_gen/relation"
 	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/video"
 	// "github.com/1359332949/douyin/pkg/consts"
@@ -64,13 +65,13 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 	if err != nil {
 		return nil, err
 	}
-	userMap := make(map[int64]*db.User)
+	userMap := make(map[int64]*user.User)
 	for _, user := range users {
 		userMap[int64(user.Id)] = user
 	}
 
 	var favoriteMap map[int64]*db.Favorite
-	var relationMap map[int64]*db.Relation
+	var relationMap map[int64]*relation.Relation
 	//if user not logged in
 	if req.UserId == -1 {
 		favoriteMap = nil

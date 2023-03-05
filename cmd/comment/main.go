@@ -1,9 +1,9 @@
 package main
 
 import (
-	comment "github.com/1359332949/douyin/kitex_gen/comment/commentservice"
+	"github.com/1359332949/douyin/kitex_gen/comment/commentservice"
 	
-	"log"
+	// "log"
 	"net"
 	"github.com/1359332949/douyin/cmd/user/dal"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -40,7 +40,7 @@ func main() {
 		provider.WithExportEndpoint(consts.ExportEndpoint),
 		provider.WithInsecure(),
 	)
-	svr := userservice.NewServer(new(CommentServiceImpl),
+	svr := commentservice.NewServer(new(CommentServiceImpl),
 		server.WithServiceAddr(addr),
 		server.WithRegistry(r),
 		server.WithLimit(&limit.Option{MaxConnections: 1000, MaxQPS: 100}),

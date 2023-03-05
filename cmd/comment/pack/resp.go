@@ -26,8 +26,8 @@ func BuildBaseResp(err error) *comment.BaseResp {
 func baseResp(err errno.ErrNo) *comment.BaseResp {
 	return &comment.BaseResp{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
-// BuildFavoriteBaseResp build comment baseResp from error
-func BuildFavoriteBaseResp(err error) *comment.FavoriteActionResponse {
+// BuildCommentBaseResp build comment baseResp from error
+func BuildCommentBaseResp(err error) *comment.CommentActionResponse {
 	if err == nil {
 		return commentbaseResp(errno.Success)
 	}
@@ -41,11 +41,11 @@ func BuildFavoriteBaseResp(err error) *comment.FavoriteActionResponse {
 	return commentbaseResp(s)
 }
 
-func commentbaseResp(err errno.ErrNo) *comment.FavoriteActionResponse {
-	return &comment.FavoriteActionResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
+func commentbaseResp(err errno.ErrNo) *comment.CommentActionResponse {
+	return &comment.CommentActionResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
 
-func BuildFavoriteListBaseResp(err error) *comment.FavoriteListResponse {
+func BuildCommentListBaseResp(err error) *comment.CommentListResponse {
 	if err == nil {
 		return commentListbaseResp(errno.Success)
 	}
@@ -59,8 +59,8 @@ func BuildFavoriteListBaseResp(err error) *comment.FavoriteListResponse {
 	return commentListbaseResp(s)
 }
 
-func commentListbaseResp(err errno.ErrNo) *comment.FavoriteListResponse {
-	return &comment.FavoriteListResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
+func commentListbaseResp(err errno.ErrNo) *comment.CommentListResponse {
+	return &comment.CommentListResponse{StatusCode: err.ErrCode, StatusMsg: err.ErrMsg}
 }
 
 func Err1(err error) *comment.CommentActionResponse {

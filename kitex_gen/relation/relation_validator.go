@@ -24,9 +24,6 @@ var (
 func (p *BaseResp) IsValid() error {
 	return nil
 }
-func (p *User) IsValid() error {
-	return nil
-}
 func (p *FriendUser) IsValid() error {
 	return nil
 }

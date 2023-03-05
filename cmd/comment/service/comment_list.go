@@ -3,14 +3,15 @@ package service
 import (
 	"context"
 	// "errors"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/dal/db"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/pack"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/kitex_gen/comment"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/errno"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/consts"
-	// "github.com/YANGJUNYAN0715/douyin/tree/main/pkg/jwt"
+	"github.com/1359332949/douyin/cmd/comment/dal/db"
+	"github.com/1359332949/douyin/cmd/comment/pack"
+	"github.com/1359332949/douyin/kitex_gen/comment"
+	"github.com/1359332949/douyin/kitex_gen/user"
+	// "github.com/1359332949/douyin/pkg/errno"
+	// "github.com/1359332949/douyin/pkg/consts"
+	// "github.com/1359332949/douyin/pkg/jwt"
 	// "sync"
-	"github.com/YANGJUNYAN0715/douyin/tree/main/cmd/comment/rpc"
+	"github.com/1359332949/douyin/cmd/comment/rpc"
 	"log"
 	"fmt"
 )
@@ -38,11 +39,13 @@ func (s *CommentListService) CommentList(req *comment.CommentListRequest) ([]*co
 	res := []*comment.Comment{}
 	for _, c := range cmts {
 		fmt.Println("get user , id = ", c.UserId)
-		user, err := rpc.QueryUserInfo(s.ctx, c.UserId)
+		// user, err := rpc.QueryUserInfo(s.ctx, c.UserId)
+		u, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: c.UserId})
+		
 		if err != nil {
 			return nil, err
 		}
-		u := user[0]
+		// u := user[0]
 		// tmp := &comment.Comment{Id: int64(c.ID), Content: c.Content,
 		// 	CreateDate: c.CreateDate, User: user}
 		tmp :=	pack.Comment(c, u)
