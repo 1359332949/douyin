@@ -8,8 +8,6 @@ import (
 	"log"
 	"github.com/1359332949/douyin/pkg/consts"
 	// "github.com/1359332949/douyin/cmd/user/dal/db"
-	"github.com/1359332949/douyin/kitex_gen/message"
-	"github.com/1359332949/douyin/pkg/errno"
 	"gorm.io/gorm"
 )
 

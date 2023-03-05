@@ -1,11 +1,11 @@
 package main
 
 import (
-	message "github.com/1359332949/douyin/kitex_gen/message/messageservice"
-	"log"
+	"github.com/1359332949/douyin/kitex_gen/message/messageservice"
+	// "log"
 	"net"
 	"github.com/1359332949/douyin/cmd/message/dal"
-
+	"github.com/1359332949/douyin/cmd/message/rpc"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"
