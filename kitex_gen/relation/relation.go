@@ -2776,9 +2776,9 @@ func (p *RelationFriendListRequest) Field2DeepEqual(src string) bool {
 }
 
 type RelationFriendListResponse struct {
-	StatusCode int32         `thrift:"status_code,1" frugal:"1,default,i32" json:"status_code"`
-	StatusMsg  string        `thrift:"status_msg,2" frugal:"2,default,string" json:"status_msg"`
-	UserList   []*FriendUser `thrift:"user_list,3" frugal:"3,default,list<FriendUser>" json:"user_list"`
+	StatusCode int32        `thrift:"status_code,1" frugal:"1,default,i32" json:"status_code"`
+	StatusMsg  string       `thrift:"status_msg,2" frugal:"2,default,string" json:"status_msg"`
+	UserList   []*user.User `thrift:"user_list,3" frugal:"3,default,list<user.User>" json:"user_list"`
 }
 
 func NewRelationFriendListResponse() *RelationFriendListResponse {
@@ -2797,7 +2797,7 @@ func (p *RelationFriendListResponse) GetStatusMsg() (v string) {
 	return p.StatusMsg
 }
 
-func (p *RelationFriendListResponse) GetUserList() (v []*FriendUser) {
+func (p *RelationFriendListResponse) GetUserList() (v []*user.User) {
 	return p.UserList
 }
 func (p *RelationFriendListResponse) SetStatusCode(val int32) {
@@ -2806,7 +2806,7 @@ func (p *RelationFriendListResponse) SetStatusCode(val int32) {
 func (p *RelationFriendListResponse) SetStatusMsg(val string) {
 	p.StatusMsg = val
 }
-func (p *RelationFriendListResponse) SetUserList(val []*FriendUser) {
+func (p *RelationFriendListResponse) SetUserList(val []*user.User) {
 	p.UserList = val
 }
 
@@ -2918,9 +2918,9 @@ func (p *RelationFriendListResponse) ReadField3(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.UserList = make([]*FriendUser, 0, size)
+	p.UserList = make([]*user.User, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := NewFriendUser()
+		_elem := user.NewUser()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}
@@ -3068,7 +3068,7 @@ func (p *RelationFriendListResponse) Field2DeepEqual(src string) bool {
 	}
 	return true
 }
-func (p *RelationFriendListResponse) Field3DeepEqual(src []*FriendUser) bool {
+func (p *RelationFriendListResponse) Field3DeepEqual(src []*user.User) bool {
 
 	if len(p.UserList) != len(src) {
 		return false

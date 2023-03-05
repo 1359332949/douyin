@@ -2336,9 +2336,9 @@ func (p *RelationFriendListResponse) FastReadField3(buf []byte) (int, error) {
 	if err != nil {
 		return offset, err
 	}
-	p.UserList = make([]*FriendUser, 0, size)
+	p.UserList = make([]*user.User, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := NewFriendUser()
+		_elem := user.NewUser()
 		if l, err := _elem.FastRead(buf[offset:]); err != nil {
 			return offset, err
 		} else {
