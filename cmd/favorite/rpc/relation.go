@@ -43,7 +43,7 @@ func InitRelation() {
 }
 
 // // QueryVideoByVideoIds query relation info by relation ids 返回对应ids的视频s
-func IsFollow(ctx context.Context, req *relation.IsFollowRequest) ([]*relation.Video, error) {
+func IsFollow(ctx context.Context, req *relation.IsFollowRequest) ([]*video.Video, error) {
 	resp, err := relationClient.IsFollow(ctx, req)
 	if err != nil {
 		return nil, err

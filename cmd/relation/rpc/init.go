@@ -1,4 +1,4 @@
 package rpc
-func init(){
-	initUser();
+func Init(){
+	InitUser();
 }

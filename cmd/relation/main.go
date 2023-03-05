@@ -3,6 +3,7 @@ package main
 import (
 	"net"
 	"github.com/1359332949/douyin/cmd/relation/dal"
+	"github.com/1359332949/douyin/cmd/relation/rpc"
 	"github.com/1359332949/douyin/kitex_gen/relation/relationservice"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
@@ -14,6 +15,7 @@ import (
 	"github.com/kitex-contrib/obs-opentelemetry/provider"
 	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	etcd "github.com/kitex-contrib/registry-etcd"
+	
 )
 
 

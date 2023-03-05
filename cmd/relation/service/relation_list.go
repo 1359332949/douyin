@@ -64,7 +64,7 @@ func (s *RelationListService) RelationFollowerList(req *relation.RelationFollowe
 }
 
 // 查找好友列表  💦先用粉丝列表代替，返回为user包装得到的FriendUser
-func (s *RelationListService) RelationFriendList(req *relation.RelationFriendListRequest)  ([]*relation.FriendUser, error) {
+func (s *RelationListService) RelationFriendList(req *relation.RelationFriendListRequest)  ([]*user.User, error) {
 	LRelationList, RRelationList, err := db.RelationFriendList(s.ctx, req.UserId)
 	if err != nil{
 		return nil, err
