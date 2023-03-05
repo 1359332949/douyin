@@ -1,5 +1,5 @@
 namespace go favorite
-
+include "video.thrift"
 struct BaseResp {
     1: i32 status_code
     2: string status_msg
@@ -25,7 +25,7 @@ struct FavoriteListRequest {
 struct FavoriteListResponse {
     1: i32 status_code //状态码，0-成功，其他值失败
     2:  string status_msg //返回状态描述
-    3: list<Video> video_list //用户点赞视频列表
+    3: list<video.Video> video_list //用户点赞视频列表
 }
 
 
