@@ -17,7 +17,7 @@ import (
 
 var relationClient relationservice.Client
 
-func InitVideo() {
+func InitRelation() {
 	r, err := etcd.NewEtcdResolver([]string{consts.ETCDAddress})
 	if err != nil {
 		panic(err)
@@ -42,14 +42,14 @@ func InitVideo() {
 	relationClient = c
 }
 
-// QueryVideoByVideoIds query relation info by relation ids 返回对应ids的视频s
-func QueryVideoByVideoIds(ctx context.Context, req *relation.QueryVideoByVideoIdsRequest) ([]*relation.Video, error) {
-	resp, err := relationClient.QueryVideoByVideoIds(ctx, req)
+// // QueryVideoByVideoIds query relation info by relation ids 返回对应ids的视频s
+func IsFollow(ctx context.Context, req *relation.IsFollowRequest) ([]*relation.Video, error) {
+	resp, err := relationClient.IsFollow(ctx, req)
 	if err != nil {
 		return nil, err
 	}
 	if resp.StatusCode != 0 {
 		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
-	return resp.VideoList, nil
+	return resp, nil
 }

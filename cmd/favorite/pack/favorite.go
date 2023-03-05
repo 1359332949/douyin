@@ -1,19 +1,20 @@
 package pack
 
 import (
-	"github.com/1359332949/douyin/cmd/interact/dal/db"
+	"github.com/1359332949/douyin/cmd/favorite/dal/db"
 	// "github.com/1359332949/douyin/kitex_gen/interact"
 	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/video"
+	"github.com/1359332949/douyin/kitex_gen/relation"
 )	
 
 // VideoList pack video list info
-func VideoList(currentId int64, videoData []*video.Video, userMap map[int64]*user.User, favoriteMap map[int64]*db.Favorite, relationMap map[int64]*db.Relation) []*video.Video {
+func VideoList(currentId int64, videoData []*video.Video, userMap map[int64]*user.User, favoriteMap map[int64]*db.Favorite, relationMap map[int64]*relation.Relation) []*video.Video {
 	videoList := make([]*video.Video, 0)
 	for _, video := range videoData {
-		videoUser, ok := userMap[video.AuthorID]
+		videoUser, ok := userMap[video.Author.Id]
 		if !ok {
-			videoUser = &db.User{
+			videoUser = &user.User{
 				Name:          "未知用户",
 				FollowCount:   0,
 				FollowerCount: 0,

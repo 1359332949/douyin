@@ -27,12 +27,9 @@ func NewFavoriteListService(ctx context.Context) *FavoriteListService {
 
 // FavoriteList get video information that users mainke
 func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([]*video.Video, error) {
-	//获取用户id
-	// Jwt := jwt.NewJWT([]byte(consts.SecretKey))
-	// req.UserId, _ := Jwt.CheckToken(req.Token)
+
 	log.Println("1===============================",req.UserId,"==================================")
-	//检查用户是否存在
-	// user, err := rpc.QueryUserByIds(s.ctx, []int64{req.UserId})
+
 	
 	user, err := rpc.QueryUserInfo(s.ctx, &user.UserInfoRequest{UserId: req.UserId})
 	if err != nil {
@@ -92,7 +89,7 @@ func (s *FavoriteListService) FavoriteList(req *favorite.FavoriteListRequest) ([
 		//获取关注信息
 		go func() {
 			defer wg.Done()
-			relationMap, err = rpc.QueryRelationByIds(s.ctx, req.UserId, userIds)
+			relationMap, err = rpc.IsFollow(s.ctx, req.UserId, userIds)
 			if err != nil {
 				relationErr = err
 				return
