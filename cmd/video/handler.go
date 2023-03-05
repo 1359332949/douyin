@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	video "github.com/1359332949/douyin/kitex_gen/video"
-
+	
 
 	// "fmt"
-	"log"
 	"github.com/1359332949/douyin/cmd/video/pack"
 	"github.com/1359332949/douyin/cmd/video/service"
 	"github.com/1359332949/douyin/pkg/errno"
+	"log"
 )
 
 // VideoServiceImpl implements the last service interface defined in the IDL.
@@ -84,5 +84,30 @@ func (s *VideoServiceImpl) GetVideoFeed(ctx context.Context, req *video.FeedRequ
 
 	resp.VideoList = vis
 	resp.NextTime = nextTime
+	return resp, nil
+}
+
+// QueryVideoByVideoIds implements the VideoServiceImpl interface.
+func (s *VideoServiceImpl) QueryVideoByVideoIds(ctx context.Context, req *video.QueryVideoByVideoIdsRequest) (resp *video.QueryVideoByVideoIdsResponse, err error) {
+	// TODO: Your code here...
+	resp = new(video.QueryVideoByVideoIdsResponse)
+
+	if err = req.IsValid(); err != nil {
+		resp.StatusCode = pack.BuildBaseResp(errno.ParamErr).StatusCode
+		resp.StatusMsg = pack.BuildBaseResp(errno.ParamErr).StatusMsg
+		return resp, nil
+	}
+
+	videos_list, err := service.NewQueryVideoByVideoIdsService(ctx).QueryVideoByVideoIds(req)
+	if err != nil {
+		resp.StatusCode = pack.BuildBaseResp(err).StatusCode
+		resp.StatusMsg = pack.BuildBaseResp(err).StatusMsg
+		return resp, nil
+	}
+
+	resp.StatusCode = pack.BuildBaseResp(errno.Success).StatusCode
+	resp.StatusMsg = pack.BuildBaseResp(errno.Success).StatusMsg
+	resp.VideoList = videos_list
+
 	return resp, nil
 }

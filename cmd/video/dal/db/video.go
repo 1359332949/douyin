@@ -7,23 +7,9 @@ import (
 	"time"
 	"github.com/1359332949/douyin/pkg/consts"
 	"gorm.io/gorm"
+	"github.com/cloudwego/kitex/pkg/klog"
 )
-type User struct {
-	gorm.Model
-	ID            int64     `gorm:"column:id;primary_key;AUTO_INCREMENT"`
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Name string `json:"name"`
-	FollowCount   int64  `json:"follow_count"`
-	FollowerCount int64  `json:"follower_count"`
-	IsFollow      bool   `json:"is_follow"`
-	// Avatar string  `json:"avatar"`
-	// BackgroundImage string  `json:"background_image"`
-	// Signature string  `json:"signature"`
-	// TotalFavorited string  `json:"total_favorited"`
-	// WorkCount int64  `json:"work_count"`
-	// FavoriteCount int64  `json:"favorite_count"`
-}
+
 type Video struct {
 	gorm.Model
 	ID       int64   `gorm:"column:id;primary_key;AUTO_INCREMENT"`   
@@ -44,10 +30,10 @@ func (v *Video) TableName() string {
 
 
 // 返回某一用户的视频表
-func MGetVideosOfUserIDList(ctx context.Context, videoID int64) ([]*Video, error) {
+func MGetVideosOfUserIDList(ctx context.Context, userId int64) ([]*Video, error) {
 	// 获取视频列表
 	res := make([]*Video, 0)
-	if err := DB.WithContext(ctx).Model(&Video{}).Where("author_id = ?", videoID).Order("id desc").Scan(&res).Error; err != nil{
+	if err := DB.WithContext(ctx).Model(&Video{}).Where("author_id = ?", userId).Order("id desc").Scan(&res).Error; err != nil{
 		return nil, err
 	}
 

@@ -7,38 +7,6 @@ import (
 	"github.com/1359332949/douyin/kitex_gen/user"
 )
 
-// User pack video info
-func User(u *db.User) *user.User {
-	if u == nil {
-		return nil
-	}
-
-	return &user.User{
-		Id: int64(u.ID), 
-		Name: u.Username,
-		FollowCount: int64(u.FollowCount),
-		FollowerCount: int64(u.FollowerCount),
-		IsFollow: bool(u.IsFollow),
-		// Avatar: string(u.Avatar),
-		// BackgroundImage: string(u.BackgroundImage),
-		// Signature: string(u.Signature),
-		// TotalFavorited: string(u.TotalFavorited),
-		// WorkCount: int64(u.WorkCount),
-		// FavoriteCount: int64(u.FavoriteCount),
-		}
-}
-
-// Users pack list of video info
-// func Users(us []*db.User) []*video.User {
-// 	users := make([]*video.User, 0)
-// 	for _, u := range us {
-// 		if temp := User(u); temp != nil {
-// 			users = append(users, temp)
-// 		}
-// 	}
-// 	return users
-// }
-// Video pack of One Video info
 func QueryVideo(v *db.Video) *video.Video {
 	if v == nil {
 		return nil

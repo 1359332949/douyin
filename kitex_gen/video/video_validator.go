@@ -53,3 +53,9 @@ func (p *PublishListRequest) IsValid() error {
 func (p *PublishListResponse) IsValid() error {
 	return nil
 }
+func (p *QueryVideoByVideoIdsRequest) IsValid() error {
+	return nil
+}
+func (p *QueryVideoByVideoIdsResponse) IsValid() error {
+	return nil
+}

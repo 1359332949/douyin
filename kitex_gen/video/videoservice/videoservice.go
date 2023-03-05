@@ -19,9 +19,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "VideoService"
 	handlerType := (*video.VideoService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"PublishAction": kitex.NewMethodInfo(publishActionHandler, newVideoServicePublishActionArgs, newVideoServicePublishActionResult, false),
-		"PublishList":   kitex.NewMethodInfo(publishListHandler, newVideoServicePublishListArgs, newVideoServicePublishListResult, false),
-		"GetVideoFeed":  kitex.NewMethodInfo(getVideoFeedHandler, newVideoServiceGetVideoFeedArgs, newVideoServiceGetVideoFeedResult, false),
+		"PublishAction":        kitex.NewMethodInfo(publishActionHandler, newVideoServicePublishActionArgs, newVideoServicePublishActionResult, false),
+		"PublishList":          kitex.NewMethodInfo(publishListHandler, newVideoServicePublishListArgs, newVideoServicePublishListResult, false),
+		"GetVideoFeed":         kitex.NewMethodInfo(getVideoFeedHandler, newVideoServiceGetVideoFeedArgs, newVideoServiceGetVideoFeedResult, false),
+		"QueryVideoByVideoIds": kitex.NewMethodInfo(queryVideoByVideoIdsHandler, newVideoServiceQueryVideoByVideoIdsArgs, newVideoServiceQueryVideoByVideoIdsResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "video",
@@ -91,6 +92,24 @@ func newVideoServiceGetVideoFeedResult() interface{} {
 	return video.NewVideoServiceGetVideoFeedResult()
 }
 
+func queryVideoByVideoIdsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*video.VideoServiceQueryVideoByVideoIdsArgs)
+	realResult := result.(*video.VideoServiceQueryVideoByVideoIdsResult)
+	success, err := handler.(video.VideoService).QueryVideoByVideoIds(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newVideoServiceQueryVideoByVideoIdsArgs() interface{} {
+	return video.NewVideoServiceQueryVideoByVideoIdsArgs()
+}
+
+func newVideoServiceQueryVideoByVideoIdsResult() interface{} {
+	return video.NewVideoServiceQueryVideoByVideoIdsResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -126,6 +145,16 @@ func (p *kClient) GetVideoFeed(ctx context.Context, req *video.FeedRequest) (r *
 	_args.Req = req
 	var _result video.VideoServiceGetVideoFeedResult
 	if err = p.c.Call(ctx, "GetVideoFeed", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) QueryVideoByVideoIds(ctx context.Context, req *video.QueryVideoByVideoIdsRequest) (r *video.QueryVideoByVideoIdsResponse, err error) {
+	var _args video.VideoServiceQueryVideoByVideoIdsArgs
+	_args.Req = req
+	var _result video.VideoServiceQueryVideoByVideoIdsResult
+	if err = p.c.Call(ctx, "QueryVideoByVideoIds", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
