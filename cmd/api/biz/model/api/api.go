@@ -8,6 +8,7 @@ import (
 	"database/sql/driver"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
+	"log"
 )
 
 type ErrCode int64
@@ -3172,12 +3173,13 @@ func (p *UserInfoResponse) String() string {
 
 type PublishActionRequest struct {
 	UserID int64  `thrift:"user_id,1" form:"user_id" json:"user_id" query:"user_id"`
-	Token  string `thrift:"token,2" json:"token" query:"token"`
-	Data   []byte `thrift:"data,3" json:"data" query:"data"`
-	Title  string `thrift:"title,4" json:"title" query:"data"`
+	Token  string `thrift:"token,2" form:"token" json:"token"`
+	Data   []byte `thrift:"data,3" form:"data" json:"data"`
+	Title  string `thrift:"title,4" form:"title" json:"title"`
 }
 
 func NewPublishActionRequest() *PublishActionRequest {
+	log.Println("==================================================/////////////////////")
 	return &PublishActionRequest{}
 }
 
@@ -3315,6 +3317,7 @@ func (p *PublishActionRequest) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadBinary(); err != nil {
 		return err
 	} else {
+		
 		p.Data = []byte(v)
 	}
 	return nil
@@ -9040,12 +9043,17 @@ func (p *CommentActionResponse) String() string {
 }
 
 type CommentListRequest struct {
-	Token   string `thrift:"token,1" form:"token" json:"token" query:"token"`
-	VideoID int64  `thrift:"video_id,2" form:"video_id" json:"video_id" query:"video_id"`
+	UserID  int64  `thrift:"user_id,1" form:"user_id" json:"user_id" query:"user_id"`
+	Token   string `thrift:"token,2" form:"token" json:"token" query:"token"`
+	VideoID int64  `thrift:"video_id,3" form:"video_id" json:"video_id" query:"video_id"`
 }
 
 func NewCommentListRequest() *CommentListRequest {
 	return &CommentListRequest{}
+}
+
+func (p *CommentListRequest) GetUserID() (v int64) {
+	return p.UserID
 }
 
 func (p *CommentListRequest) GetToken() (v string) {
@@ -9057,8 +9065,9 @@ func (p *CommentListRequest) GetVideoID() (v int64) {
 }
 
 var fieldIDToName_CommentListRequest = map[int16]string{
-	1: "token",
-	2: "video_id",
+	1: "user_id",
+	2: "token",
+	3: "video_id",
 }
 
 func (p *CommentListRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -9081,7 +9090,7 @@ func (p *CommentListRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -9091,8 +9100,18 @@ func (p *CommentListRequest) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -9131,6 +9150,15 @@ ReadStructEndError:
 }
 
 func (p *CommentListRequest) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserID = v
+	}
+	return nil
+}
+
+func (p *CommentListRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -9139,7 +9167,7 @@ func (p *CommentListRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CommentListRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *CommentListRequest) ReadField3(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
@@ -9162,6 +9190,10 @@ func (p *CommentListRequest) Write(oprot thrift.TProtocol) (err error) {
 			fieldId = 2
 			goto WriteFieldError
 		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
 
 	}
 	if err = oprot.WriteFieldStop(); err != nil {
@@ -9182,10 +9214,10 @@ WriteStructEndError:
 }
 
 func (p *CommentListRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("token", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("user_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Token); err != nil {
+	if err := oprot.WriteI64(p.UserID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -9199,10 +9231,10 @@ WriteFieldEndError:
 }
 
 func (p *CommentListRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("video_id", thrift.I64, 2); err != nil {
+	if err = oprot.WriteFieldBegin("token", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.VideoID); err != nil {
+	if err := oprot.WriteString(p.Token); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -9213,6 +9245,23 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CommentListRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("video_id", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.VideoID); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *CommentListRequest) String() string {
@@ -9821,6 +9870,7 @@ func (p *UserServiceClient) UserInfo(ctx context.Context, req *UserInfoRequest) 
 	return _result.GetSuccess(), nil
 }
 func (p *UserServiceClient) PublishAction(ctx context.Context, req *PublishActionRequest) (r *PublishActionResponse, err error) {
+	log.Println("-------------------------------PublishAction-----------------------------------------------------")
 	var _args UserServicePublishActionArgs
 	_args.Req = req
 	var _result UserServicePublishActionResult
@@ -10211,6 +10261,7 @@ type userServiceProcessorPublishAction struct {
 }
 
 func (p *userServiceProcessorPublishAction) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	log.Println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 	args := UserServicePublishActionArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
@@ -11231,6 +11282,7 @@ type UserServicePublishActionArgs struct {
 }
 
 func NewUserServicePublishActionArgs() *UserServicePublishActionArgs {
+	log.Println("***************NewUserServicePublishActionArgs***************")
 	return &UserServicePublishActionArgs{}
 }
 

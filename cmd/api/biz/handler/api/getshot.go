@@ -8,6 +8,8 @@ import (
        "log"
        "os"
        "strings"
+       "time"
+       "strconv"
 )
 
 
@@ -22,27 +24,28 @@ func GetSnapshot(videoPath, snapshotPath string, frameNum int) (snapshotName str
              Run()
 
        if err != nil {
-             log.Fatal("生成缩略图失败：", err)
+             log.Fatal("生成缩略图失败1：", err)
              return "", err
 
        }
 
        img, err := imaging.Decode(buf)
        if err != nil {
-             log.Fatal("生成缩略图失败：", err)
+             log.Fatal("生成缩略图失败2：", err)
              return "", err
 
        }
-       
-       err = imaging.Save(img, snapshotPath+".png")
+       var name = strconv.Itoa((int)(time.Now().UnixMilli()))
+       err = imaging.Save(img, snapshotPath+"/"+name+".jpeg")
+       log.Println("........................"+name+".jpeg"+"............................")
        if err != nil {
-             log.Fatal("生成缩略图失败：", err)
+             log.Fatal("生成缩略图失败3：", err)
              return "", err
 
        }
-
-       names := strings.Split(snapshotPath, "\\")
-       snapshotName = names[len(names)-1] + ".png"
+       names := strings.Split(name, "\\")
+      //  names := strings.Split(snapshotPath, "\\")
+       snapshotName = names[len(names)-1] + ".jpeg"
        return
 }
 
