@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/1359332949/douyin/cmd/relation/pack"
 	"github.com/1359332949/douyin/cmd/relation/service"
-	"github.com/1359332949/douyin/kitex_gen/relation"
-	relation "github.com/1359332949/douyin/kitex_gen/relation/relation"
+
+	relation "github.com/1359332949/douyin/kitex_gen/relation"
 
 	// "log"
 
