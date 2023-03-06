@@ -6,7 +6,6 @@ enum ErrCode {
     ParamErrCode               = 10002
     UserAlreadyExistErrCode    = 10003
     AuthorizationFailedErrCode = 10004
-
     MessageIsNullErrCode    = 90003
     
 }
@@ -42,7 +41,7 @@ struct Message {
     2: i64 to_user_id          // 该消息接收者的id
     3: i64 from_user_id        // 该消息发送者的id
     4: string content         // 消息内容
-    5:optional i64 create_time      // 消息创建时间
+    5: optional i64 create_time      // 消息创建时间
 }
 
 struct FriendUser {
@@ -154,7 +153,7 @@ struct RelationFriendListRequest {
 struct RelationFriendListResponse {
     1: i32 status_code // 状态码，0-成功，其他值-失败
     2: string status_msg // 返回状态描述
-    3: list<FriendUser> user_list // 用户列表
+    3: list<User> user_list // 用户列表
 }
 
 struct MessageChatRequest {
@@ -211,18 +210,27 @@ service UserService {
     LoginUserResponse LoginUser(1: LoginUserRequest req) (api.post="/douyin/user/login/")
     RegisterUserResponse RegisterUser(1: RegisterUserRequest req) (api.post="/douyin/user/register/")
     UserInfoResponse UserInfo(1: UserInfoRequest req) (api.get="/douyin/user/")
-    PublishActionResponse PublishAction(1: PublishActionRequest req) (api.post="/douyin/publish/action/");
-    PublishListResponse PublishList(1: PublishListRequest req) (api.get="/douyin/publish/list/");
-    FeedResponse GetUserFeed (1:FeedRequest req)(api.get="/douyin/feed/")
+   
 }
+service VideoService {
+    
+    PublishActionResponse PublishAction(1: PublishActionRequest req) (api.post="/douyin/publish/action/")
+    PublishListResponse PublishList(1: PublishListRequest req) (api.get="/douyin/publish/list/")
+    FeedResponse GetVideoFeed (1:FeedRequest req) (api.get="/douyin/feed/")
 
+    
+}
 service RelationService {
     RelationActionResponse RelationAction (1: RelationActionRequest req) (api.post="/douyin/relation/action/")
     RelationFollowListResponse RelationFollowList (1: RelationFollowListRequest req) (api.get="/douyin/relation/follow/list/")
     RelationFollowerListResponse RelationFollowerList (1: RelationFollowerListRequest req) (api.get="/douyin/relation/follower/list/")
     RelationFriendListResponse RelationFriendList (1: RelationFriendListRequest req) (api.get="/douyin/relation/friend/list/")
+    
+}
+service MessageService {
+    
     MessageChatResponse MessageChat(1: MessageChatRequest req) (api.get="/douyin/message/chat/")               // 消息记录
-    MessageActionResponse MessageAction(1: MessageActionRequest req) (api.post="/douyin/message/action/")         // 发送消息
+    MessaeActionResponse MessageAction(1: MessageActionRequest req) (api.post="/douyin/message/action/")         // 发送消息
 }
 struct FavoriteActionRequest {
     1: i64 user_id
@@ -284,11 +292,14 @@ struct Comment {
     4: string create_date  // 评论发布日期，格式 mm-dd
 }
 
-service InteractService {
+service FavoriteService {
     
     FavoriteActionResponse FavoriteAction(1:FavoriteActionRequest req) (api.post="/douyin/favorite/action/") // 用户点赞
     FavoriteListResponse FavoriteList(1:FavoriteListRequest req) (api.get="/douyin/favorite/list/")// 用户点赞列表
+}
 
+service CommentService {
     CommentActionResponse CommentAction(1: CommentActionRequest req) (api.post="/douyin/comment/action/") //评论操作
     CommentListResponse CommentList(1: CommentListRequest req) (api.get="/douyin/comment/list/") //返回评论列表
 }
+
