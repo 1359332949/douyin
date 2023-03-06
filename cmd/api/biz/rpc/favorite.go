@@ -4,6 +4,7 @@ package rpc
 import (
 	"context"
 	// "log"
+	"github.com/1359332949/douyin/kitex_gen/video"
 	"github.com/1359332949/douyin/kitex_gen/favorite"
 	"github.com/1359332949/douyin/kitex_gen/favorite/favoriteservice"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -59,7 +60,7 @@ func FavoriteAction(ctx context.Context, req *favorite.FavoriteActionRequest) er
 }
 
 // FavoriteList query list of note info
-func FavoriteList(ctx context.Context, req *favorite.FavoriteListRequest) ([]*favorite.Video, error) {
+func FavoriteList(ctx context.Context, req *favorite.FavoriteListRequest) ([]*video.Video, error) {
 	resp, err := favoriteClient.FavoriteList(ctx, req)
 	if err != nil {
 		return nil, err

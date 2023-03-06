@@ -2,12 +2,14 @@
 package consts
 
 const (
-	MessageTableName   = "message"
-	RelationTableName   = "relation"
-	CommentTableName = "comment"
+	
 	UserTableName   = "user"
-	FavoriteTableName = "favorite"
 	VideoTableName   = "video"
+	FavoriteTableName = "favorite"
+	CommentTableName = "comment"
+	RelationTableName   = "relation"
+	MessageTableName   = "message"
+	
 	SecretKey       = "secret key"
 	IdentityKey     = "id"
 	Total           = "total"

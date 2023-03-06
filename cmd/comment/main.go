@@ -5,7 +5,8 @@ import (
 	
 	// "log"
 	"net"
-	"github.com/1359332949/douyin/cmd/user/dal"
+	"github.com/1359332949/douyin/cmd/comment/dal"
+	"github.com/1359332949/douyin/cmd/comment/rpc"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"

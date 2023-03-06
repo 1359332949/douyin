@@ -4,7 +4,7 @@ import (
 	"github.com/1359332949/douyin/kitex_gen/favorite/favoriteservice"
 	// "log"
 	"net"
-	"github.com/1359332949/douyin/cmd/user/dal"
+	"github.com/1359332949/douyin/cmd/favorite/dal"
 	"github.com/1359332949/douyin/pkg/consts"
 	"github.com/1359332949/douyin/pkg/mw"
 	"github.com/cloudwego/kitex/pkg/klog"

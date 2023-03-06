@@ -230,7 +230,7 @@ service RelationService {
 service MessageService {
     
     MessageChatResponse MessageChat(1: MessageChatRequest req) (api.get="/douyin/message/chat/")               // 消息记录
-    MessaeActionResponse MessageAction(1: MessageActionRequest req) (api.post="/douyin/message/action/")         // 发送消息
+    MessageActionResponse MessageAction(1: MessageActionRequest req) (api.post="/douyin/message/action/")         // 发送消息
 }
 struct FavoriteActionRequest {
     1: i64 user_id

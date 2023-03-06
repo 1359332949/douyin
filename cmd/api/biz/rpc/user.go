@@ -1,10 +1,9 @@
 
-
 package rpc
 
 import (
 	"context"
-	"log"
+	// "log"
 	"github.com/1359332949/douyin/kitex_gen/user"
 	"github.com/1359332949/douyin/kitex_gen/user/userservice"
 	"github.com/1359332949/douyin/pkg/consts"
@@ -78,40 +77,4 @@ func UserInfo(ctx context.Context, req *user.UserInfoRequest) (*user.User, error
 		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
 	}
 	return resp.User, nil
-}
-
-// PublishAction check user info
-func PublishAction(ctx context.Context, req *user.PublishActionRequest) error {
-	log.Println("-------------------PublishAction----------------------------------------")
-	resp, err := userClient.PublishAction(ctx, req)
-	if err != nil {
-		return err
-	}
-	if resp.StatusCode != 0 {
-		return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return nil
-}
-
-// PublishList query list of note info
-func PublishList(ctx context.Context, req *user.PublishListRequest) ([]*user.Video, error) {
-	resp, err := userClient.PublishList(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 0 {
-		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return resp.VideoList, nil
-}
-// GetUserFeed query list of note info
-func GetUserFeed(ctx context.Context, req *user.FeedRequest) (resp *user.FeedResponse, err error) {
-	resp, err = userClient.GetUserFeed(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 0 {
-		return nil, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return resp, nil
 }

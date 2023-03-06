@@ -2,7 +2,7 @@
 
 package dal
 
-import "github.com/1359332949/douyin/cmd/interact/dal/db"
+import "github.com/1359332949/douyin/cmd/comment/dal/db"
 
 // Init init dal
 func Init() {

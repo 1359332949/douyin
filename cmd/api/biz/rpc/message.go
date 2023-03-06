@@ -44,62 +44,6 @@ func initMessage() {
 	messageClient = c
 }
 
-// 传递 关注操作 的上下文, 并获取 RPC Server 端的响应.
-func MessageAction(ctx context.Context, req *message.MessageActionRequest) (error) {
-	resp, err := messageClient.MessageAction(ctx, req)
-	if err != nil {
-		return err
-	}
-	if resp.StatusCode != 0 {
-		// return nil, errno.NewErrNo(int(resp.StatusCode), *resp.StatusMsg)
-		return errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return nil
-}
-
-// 传递 获取正在关注列表操作 的上下文, 并获取 RPC Server 端的响应.
-func MessageFollowList(ctx context.Context, req *message.MessageFollowListRequest) ([]*message.User,error) {
-	resp, err := messageClient.MessageFollowList(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 0 {
-		// return nil, errno.NewErrNo(int(resp.StatusCode), *resp.StatusMsg)
-		return nil,errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	// log.Println("***api-rpc-message.go***")
-	// log.Println(resp.UserList)
-	return resp.UserList, nil
-}
-
-// 传递 获取粉丝列表操作 的上下文, 并获取 RPC Server 端的响应.
-func MessageFollowerList(ctx context.Context, req *message.MessageFollowerListRequest) ([]*message.User,error) {
-	resp, err := messageClient.MessageFollowerList(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 0 {
-		// return nil, errno.NewErrNo(int(resp.StatusCode), *resp.StatusMsg)
-		return nil,errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return resp.UserList, nil
-}
-
-// MessageFriendList
-func MessageFriendList(ctx context.Context, req *message.MessageFriendListRequest) ([]*message.FriendUser, error) {
-	resp, err := messageClient.MessageFriendList(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	if resp.StatusCode != 0 {
-		// return 0, errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-		return nil,errno.NewErrNo(resp.StatusCode, resp.StatusMsg)
-	}
-	return resp.UserList, nil
-}
-
-
-
 func MessageChat(ctx context.Context, req *message.MessageChatRequest) ([]*message.Message,error) {
 	resp, err := messageClient.MessageChat(ctx, req)
 	if err != nil {
